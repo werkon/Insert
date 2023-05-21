@@ -43,6 +43,9 @@ public class Field {
     public void set(int x, int y, int color){
         field[x][y] = color;
     }
-    
+
+    public int get(int x, int y){
+        return field[x][y];
+    }
     
 }
