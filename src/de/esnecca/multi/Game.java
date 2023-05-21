@@ -4,6 +4,7 @@ public class Game extends Field {
 
     private int colors;
     private int wins;
+
     private int inserted;
     private int[] insertedRow;
     private int currentColor;
@@ -31,6 +32,7 @@ public class Game extends Field {
         if( currentColor > colors){
             currentColor = 1;
         }
+        ++inserted;
     }
 
     public void remove(int x){
@@ -39,9 +41,10 @@ public class Game extends Field {
         if( currentColor <= 0 ){
             currentColor = colors;
         }
+        --inserted;
     }
 
-    public int getCurrentColor(int x){
+    public int getCurrentColor(){
         return currentColor;
     }
 
@@ -58,16 +61,11 @@ public class Game extends Field {
     }
 
     public boolean isFull(int x){
-        return getInserted( x ) < getHeight();
+        return getInserted( x ) >= getHeight();
     }
 
-    public boolean test(int x){
-
-        int i;
-        for( i = 1; i < wins; ++i){
-            
-        }
-        return false;
+    public int getWins() {
+        return wins;
     }
 
 }
