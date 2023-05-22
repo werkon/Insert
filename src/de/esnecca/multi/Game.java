@@ -52,6 +52,10 @@ public class Game extends Field {
         return insertedRow[x];
     }
 
+    public int setInserted(int x, int inserted) {
+        return insertedRow[x] = inserted;
+    }
+
     public int getInserted() {
         return inserted;
     }
@@ -160,4 +164,28 @@ public class Game extends Field {
         return false;
     }
 
+    public void print(){
+        System.out.print("   ");
+        for( int x = 0; x < getWidth(); ++x){
+            System.out.print(" " + x );
+        }
+        System.out.println("");
+        System.out.print("   ");
+        for( int x = 0; x < getWidth(); ++x){
+            System.out.print(" |" );
+        }
+        System.out.println("");
+        super.print();
+        System.out.print("   ");
+        for( int x = 0; x < getWidth(); ++x){
+            System.out.print(" |" );
+        }
+        System.out.println("");
+        System.out.print("   ");
+        for( int x = 0; x < getWidth(); ++x){
+            System.out.print(" " + getInserted(x) );
+        }
+        System.out.println("");
+        System.out.println("");
+    }
 }
