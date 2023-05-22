@@ -108,8 +108,8 @@ public class GameTest {
         game.insert(width - 1);
         game.insert(0);
 
-        //        2
-        //  1     1
+        // 2
+        // 1 1
 
         assertEquals(3, game.getInserted());
         assertEquals(1, game.getInserted(0));
@@ -120,8 +120,8 @@ public class GameTest {
 
         game.remove(0);
 
-        //        2
-        //        1
+        // 2
+        // 1
 
         assertEquals(2, game.getInserted());
         assertEquals(0, game.getInserted(0));
@@ -132,8 +132,8 @@ public class GameTest {
 
         game.remove(width - 1);
 
-        //        
-        //        1
+        //
+        // 1
 
         assertEquals(1, game.getInserted());
         assertEquals(0, game.getInserted(0));
@@ -144,8 +144,8 @@ public class GameTest {
 
         game.remove(width - 1);
 
-        //        
-        //        
+        //
+        //
 
         assertEquals(0, game.getInserted());
         assertEquals(0, game.getInserted(0));
@@ -164,12 +164,136 @@ public class GameTest {
             }
         }
         game.reset();
-        assertEquals(false, game.isFull()); 
+        assertEquals(false, game.isFull());
         assertEquals(0, game.getInserted());
         for (int x = 0; x < width; ++x) {
-            assertEquals(false,game.isFull(x));
+            assertEquals(false, game.isFull(x));
             assertEquals(0, game.getInserted(x));
         }
+
+    }
+
+    @Test
+    public void testTest() {
+
+        // Horizontal
+
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(false, game.test(2));
+        game.insert(2);
+        assertEquals(false, game.test(2));
+        game.insert(2);
+        assertEquals(true, game.test(3));
+        game.insert(3);
+        game.print();
+        game.reset();
+
+        assertEquals(false, game.test(width - 1));
+        game.insert(width - 1);
+        assertEquals(false, game.test(width - 1));
+        game.insert(width - 1);
+        assertEquals(false, game.test(width - 2));
+        game.insert(width - 2);
+        assertEquals(false, game.test(width - 2));
+        game.insert(width - 2);
+        assertEquals(false, game.test(width - 3));
+        game.insert(width - 3);
+        assertEquals(false, game.test(width - 3));
+        game.insert(width - 3);
+        assertEquals(true, game.test(width - 4));
+        game.insert(width - 4);
+        game.print();
+        game.reset();
+
+        // Vertikal 
+
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(true, game.test(0));
+        game.insert(0);
+        game.print();
+        game.reset();
+
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(false, game.test(0));
+        game.insert(0);
+        assertEquals(false, game.test(1));
+        game.insert(1);
+        assertEquals(true, game.test(0));
+        game.insert(0);
+        assertEquals(6 , game.getInserted(0));
+        game.print();
+        game.reset();
+
+        // Diagonal /
+
+        assertEquals(false, game.test(0));
+        game.insert(0);
+
+        assertEquals(false, game.test(1));
+        game.insert(1);
+
+        assertEquals(false, game.test(1));
+        game.insert(1);
+
+        assertEquals(false, game.test(2));
+        game.insert(2);
+
+        assertEquals(false, game.test(2));
+        game.insert(2);
+
+        assertEquals(false, game.test(3));
+        game.insert(3);
+
+        assertEquals(false, game.test(2));
+        game.insert(2); 
+
+        assertEquals(false, game.test(3));
+        game.insert(3);
+
+        assertEquals(false, game.test(3));
+        game.insert(3);
+
+        assertEquals(false, game.test(0));
+        game.insert(0);
+
+        assertEquals(true, game.test(3));
+        game.insert(3);
+ 
+        assertEquals(4 , game.getInserted(3));
+
+        game.print();
+        game.reset();
+
+
 
     }
 }

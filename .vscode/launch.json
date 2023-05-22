@@ -14,8 +14,7 @@
             "type": "java",
             "name": "App",
             "request": "launch",
-            "mainClass": "App",
-            "projectName": "Insert_f91da72d"
+            "mainClass": "App"
         }
     ]
 }

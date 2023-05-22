@@ -47,5 +47,16 @@ public class Field {
     public int get(int x, int y){
         return field[x][y];
     }
+
+    public void print(){
+        for( int y = height - 1; y >= 0; --y){
+            System.out.print( y + " - ");
+            for( int x = 0; x < width; ++x){
+                System.out.print(" " + get(x,y) );
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+    }
     
 }

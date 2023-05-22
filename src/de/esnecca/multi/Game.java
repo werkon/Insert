@@ -17,55 +17,147 @@ public class Game extends Field {
         reset();
     }
 
-    public void reset(){
+    public void reset() {
         super.reset();
-        for( int x = 0; x < getWidth(); ++x ){
+        for (int x = 0; x < getWidth(); ++x) {
             insertedRow[x] = 0;
         }
         inserted = 0;
         currentColor = 1;
     }
-    
-    public void insert(int x){
-        set( x, insertedRow[x]++, currentColor );
+
+    public void insert(int x) {
+        set(x, insertedRow[x]++, currentColor);
         ++currentColor;
-        if( currentColor > colors){
+        if (currentColor > colors) {
             currentColor = 1;
         }
         ++inserted;
     }
 
-    public void remove(int x){
-        set( x, --insertedRow[x], 0 );
+    public void remove(int x) {
+        set(x, --insertedRow[x], 0);
         --currentColor;
-        if( currentColor <= 0 ){
+        if (currentColor <= 0) {
             currentColor = colors;
         }
         --inserted;
     }
 
-    public int getCurrentColor(){
+    public int getCurrentColor() {
         return currentColor;
     }
 
-    public int getInserted(int x){
+    public int getInserted(int x) {
         return insertedRow[x];
     }
 
-    public int getInserted(){
+    public int getInserted() {
         return inserted;
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return getInserted() >= getSize();
     }
 
-    public boolean isFull(int x){
-        return getInserted( x ) >= getHeight();
+    public boolean isFull(int x) {
+        return getInserted(x) >= getHeight();
     }
 
     public int getWins() {
         return wins;
+    }
+
+    public boolean test(int x) {
+
+        // Horizontal
+        int count = 1;
+        int y = getInserted(x);
+        for (int i = 1; x + i < getWidth(); ++i) {
+            int color = get(x + i, y);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        for (int i = 1; x - i >= 0; ++i) {
+            int color = get(x - i, y);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        if (count >= wins) {
+            return true;
+        }
+
+        // Vertikal
+        count = 1;
+        y = getInserted(x);
+        for (int i = 1; y - i >= 0; ++i) {
+            int color = get(x, y - i);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        if (count >= wins) {
+            return true;
+        }
+
+        // Diagonal /
+
+        count = 1;
+        y = getInserted(x);
+        for (int i = 1; x + i < getWidth() && y + i < getHeight(); ++i) {
+            int color = get(x + i, y + i);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        for (int i = 1; x - i >= 0 && y - i >= 0; ++i) {
+            int color = get(x - i, y - i);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        if (count >= wins) {
+            return true;
+        }
+
+        // Diagonal \
+
+        count = 1;
+        y = getInserted(x);
+        for (int i = 1; x + i < getWidth() && y - i >= 0; ++i) {
+            int color = get(x + i, y - i);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        for (int i = 1; x - i >= 0 && y + i < getHeight(); ++i) {
+            int color = get(x - i, y + i);
+            if (color == currentColor) {
+                ++count;
+            } else {
+                break;
+            }
+        }
+        if (count >= wins) {
+            return true;
+        }
+
+
+        return false;
     }
 
 }
