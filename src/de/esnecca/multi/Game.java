@@ -72,6 +72,91 @@ public class Game extends Field {
         return wins;
     }
 
+    public boolean test() {
+
+        // Horizontal
+
+        for (int y = 0; y < getHeight(); ++y) {
+            for (int x = 0; x <= getWidth() - wins; ++x) {
+                int color = get(x, y);
+                if (color > 0) {
+                    boolean eq = true;
+                    for (int w = 1; w < wins; ++w) {
+                        if (get(x + w, y) != color) {
+                            eq = false;
+                            break;
+                        }
+                    }
+                    if (eq) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // Vertikal
+
+        for (int x = 0; x < getWidth(); ++x) {
+            for (int y = 0; y <= getHeight() - wins; ++y) {
+                int color = get(x, y);
+                if (color > 0) {
+                    boolean eq = true;
+                    for (int w = 1; w < wins; ++w) {
+                        if (get(x, y + w) != color) {
+                            eq = false;
+                            break;
+                        }
+                    }
+                    if (eq) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // Diagonal /
+
+        for (int x = 0; x <= getWidth() - wins; ++x) { // 0 1 2 3
+            for (int y = 0; y <= getHeight() - wins; ++y) { // 0 1 2
+                int color = get(x, y);
+                if (color > 0) {
+                    boolean eq = true;
+                    for (int w = 1; w < wins; ++w) { // 1 2 3
+                        if (get(x + w, y + w) != color) {
+                            eq = false;
+                            break;
+                        }
+                    }
+                    if (eq) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // Diagonal \
+
+        for (int x = 0; x <= getWidth() - wins; ++x) { // 0 1 2 3
+            for (int y = 0; y <= getHeight() - wins; ++y) { // 0 1 2
+                int color = get(x, y + wins - 1);
+                if (color > 0) {
+                    boolean eq = true;
+                    for (int w = 1; w < wins; ++w) { // 1 2 3
+                        if (get(x + w, y + wins - w - 1 ) != color) {
+                            eq = false;
+                            break;
+                        }
+                    }
+                    if (eq) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean test(int x) {
 
         // Horizontal
@@ -160,30 +245,29 @@ public class Game extends Field {
             return true;
         }
 
-
         return false;
     }
 
-    public void print(){
+    public void print() {
         System.out.print("   ");
-        for( int x = 0; x < getWidth(); ++x){
-            System.out.print(" " + x );
+        for (int x = 0; x < getWidth(); ++x) {
+            System.out.print(" " + x);
         }
         System.out.println("");
         System.out.print("   ");
-        for( int x = 0; x < getWidth(); ++x){
-            System.out.print(" |" );
+        for (int x = 0; x < getWidth(); ++x) {
+            System.out.print(" |");
         }
         System.out.println("");
         super.print();
         System.out.print("   ");
-        for( int x = 0; x < getWidth(); ++x){
-            System.out.print(" |" );
+        for (int x = 0; x < getWidth(); ++x) {
+            System.out.print(" |");
         }
         System.out.println("");
         System.out.print("   ");
-        for( int x = 0; x < getWidth(); ++x){
-            System.out.print(" " + getInserted(x) );
+        for (int x = 0; x < getWidth(); ++x) {
+            System.out.print(" " + getInserted(x));
         }
         System.out.println("");
         System.out.println("");

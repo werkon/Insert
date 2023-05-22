@@ -2,6 +2,8 @@ package de.esnecca.multi;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -191,6 +193,9 @@ public class GameTest {
         assertEquals(false, game.test(2));
         game.insert(2);
         assertEquals(true, game.test(3));
+        assertEquals(false, game.test());
+        game.insert(width-4);
+        assertEquals(true, game.test());
         game.print();
         game.reset();
 
@@ -207,6 +212,9 @@ public class GameTest {
         assertEquals(false, game.test(width - 3));
         game.insert(width - 3);
         assertEquals(true, game.test(width - 4));
+        assertEquals(false, game.test());
+        game.insert(width-4);
+        assertEquals(true, game.test());
         game.print();
         game.reset();
 
@@ -225,6 +233,9 @@ public class GameTest {
         assertEquals(false, game.test(1));
         game.insert(1);
         assertEquals(true, game.test(0));
+        assertEquals(false, game.test());
+        game.insert(0);
+        assertEquals(true,game.test());
         game.print();
         game.reset();
 
@@ -245,8 +256,10 @@ public class GameTest {
         assertEquals(false, game.test(1));
         game.insert(1);
         assertEquals(true, game.test(0));
+        assertEquals(false, game.test());
         game.insert(0);
         assertEquals(6, game.getInserted(0));
+        assertEquals(true,game.test());
         game.print();
         game.reset();
 
@@ -283,10 +296,10 @@ public class GameTest {
         game.insert(0);
 
         assertEquals(true, game.test(3));
+        assertEquals(false, game.test());
         game.insert(3);
-
         assertEquals(4, game.getInserted(3));
-
+        assertEquals(true,game.test());
         game.print();
         game.reset();
 
@@ -336,16 +349,15 @@ public class GameTest {
         game.insert(width - 1);
 
         assertEquals(true, game.test(width - 1));
+        assertEquals(false, game.test());
         game.insert(width - 1);
-
         assertEquals(6, game.getInserted(width - 1));
-
+        assertEquals(true, game.test());
         game.print();
         game.reset();
 
         assertEquals(false, game.test(width - 5));
         game.insert(width - 6);
-
         assertEquals(false, game.test(width - 4));
         game.insert(width - 4);
         assertEquals(false, game.test(width - 3));
@@ -392,9 +404,10 @@ public class GameTest {
         game.insert(width - 1);
 
         assertEquals(true, game.test(width - 1));
+        assertEquals(false, game.test());
         game.insert(width - 1);
-
         assertEquals(6, game.getInserted(width - 1));
+        assertEquals(true, game.test());
 
         game.print();
         game.reset();
@@ -432,9 +445,11 @@ public class GameTest {
         game.insert(3);
 
         assertEquals(true, game.test(0));
+        assertEquals(false, game.test());
         game.insert(0);
 
         assertEquals(4, game.getInserted(0));
+        assertEquals(true, game.test());
 
         game.print();
         game.reset();
@@ -485,16 +500,16 @@ public class GameTest {
         game.insert(width - 4);
 
         assertEquals(true, game.test(width - 4));
+        assertEquals(false, game.test());
         game.insert(width - 4);
-
         assertEquals(6, game.getInserted(width - 4));
+        assertEquals(true, game.test());
 
         game.print();
         game.reset();
 
         assertEquals(false, game.test(width - 5));
         game.insert(width - 6);
-
         assertEquals(false, game.test(width - 1));
         game.insert(width - 1);
         assertEquals(false, game.test(width - 2));
@@ -541,9 +556,10 @@ public class GameTest {
         game.insert(width - 4);
 
         assertEquals(true, game.test(width - 4));
+        assertEquals(false, game.test());
         game.insert(width - 4);
-
         assertEquals(6, game.getInserted(width - 4));
+        assertEquals(true, game.test());
 
         game.print();
         game.reset();
@@ -634,6 +650,33 @@ public class GameTest {
                     assertEquals(true, game.test(x + w));
                 }
             }
+        }
+
+        for(int i = 0; i < 1000; ++i){
+            Random rn = new Random();
+            System.out.println(i);
+            game.reset();
+            boolean stop = false;
+            while(!stop){
+                if( game.isFull() ){
+                    stop = true;
+                }
+                int x = rn.nextInt(width);
+                if( !game.isFull(x)){
+                    if( game.test(x) ){
+                        assertEquals(false, game.test());
+                        game.insert(x);
+                        assertEquals(true, game.test());
+                        game.print();
+                        stop = true;
+                    }else{
+                        assertEquals(false, game.test());
+                        game.insert(x);
+                        assertEquals(false, game.test());
+                    }
+                }
+            }
+
         }
 
     }
