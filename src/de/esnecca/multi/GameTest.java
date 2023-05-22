@@ -191,7 +191,6 @@ public class GameTest {
         assertEquals(false, game.test(2));
         game.insert(2);
         assertEquals(true, game.test(3));
-        game.insert(3);
         game.print();
         game.reset();
 
@@ -208,7 +207,6 @@ public class GameTest {
         assertEquals(false, game.test(width - 3));
         game.insert(width - 3);
         assertEquals(true, game.test(width - 4));
-        game.insert(width - 4);
         game.print();
         game.reset();
 
@@ -227,7 +225,6 @@ public class GameTest {
         assertEquals(false, game.test(1));
         game.insert(1);
         assertEquals(true, game.test(0));
-        game.insert(0);
         game.print();
         game.reset();
 
@@ -593,6 +590,51 @@ public class GameTest {
             }
         }
 
+        // Diagonal /
+        for (int y = 0; y <= height - wins; ++y) {  // 6 - 4 = 2 -> 0 1 2
+            for (int x = 0; x <= width - wins; ++x) {
+                game.reset();
+                for (int w = 0; w < wins; ++w) {
+                    game.reset();
+                    for (int t = 0; t < wins; ++t) {
+                        if (w == t ) {
+                            game.setInserted(x + t, y + t);
+                        } else {
+                            game.set(x + t, y + t, 1);
+                            game.setInserted(x + t, y + t + 1);
+                        }
+                        for (int s = y + t - 1; s >= 0; --s) {
+                            game.set(x + t, s, 2);
+                        }
+                    }
+                    game.print();
+                    assertEquals(true, game.test(x + w));
+                }
+            }
+        }
+
+        // Diagonal \
+        for (int y = 0; y <= height - wins; ++y) {  
+            for (int x = 0; x <= width - wins; ++x) {
+                game.reset();
+                for (int w = 0; w < wins; ++w) {
+                    game.reset();
+                    for (int t = 0; t < wins; ++t) {
+                        if (w == t ) {
+                            game.setInserted(x + t, y + wins - t - 1);
+                        } else {
+                            game.set(x + t, y + wins - t - 1, 1);
+                            game.setInserted(x + t, y + wins - t);
+                        }
+                        for (int s = y + wins - t - 2; s >= 0; --s) {
+                           game.set(x + t, s, 2);
+                        }
+                    }
+                    game.print();
+                    assertEquals(true, game.test(x + w));
+                }
+            }
+        }
 
     }
 }
