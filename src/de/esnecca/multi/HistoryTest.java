@@ -88,5 +88,6 @@ public class HistoryTest {
     public void testReset() {
         history.insert(0);
         history.reset();
+        assertEquals(0, history.getInserted());
     }
 }
