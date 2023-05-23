@@ -22,6 +22,32 @@ public class GameTest {
     }
 
     @Test
+    public void testCopyConstructor() {
+        game.insert(0);
+        Game g = new Game(game);
+        g.insert(0);
+
+        assertEquals(1, game.getInserted());
+        assertEquals(2, g.getInserted());
+        assertEquals(1, game.getInserted(0));
+        assertEquals(2, g.getInserted(0));
+
+        assertEquals(1, game.get(0,0));
+        assertEquals(2, g.get(0,1));
+
+        assertEquals(2, game.getCurrentColor());
+        assertEquals(1, g.getCurrentColor());
+
+        assertEquals(g.getWidth(),game.getWidth());
+        assertEquals(g.getHeight(),game.getHeight());
+        assertEquals(g.getSize(),game.getSize());
+        assertEquals(g.getWidth(),game.getWidth());
+        assertEquals(g.getColors(),game.getColors());
+
+    }
+
+
+    @Test
     public void testGetCurrentColor() {
         int cc = game.getCurrentColor();
         assertEquals(1, game.getCurrentColor());

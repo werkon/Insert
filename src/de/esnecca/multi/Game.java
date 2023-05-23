@@ -4,10 +4,9 @@ public class Game extends Field {
 
     private int colors;
     private int wins;
-
     private int inserted;
-    private int[] insertedRow;
     private int currentColor;
+    private int[] insertedRow;
 
     public Game(int width, int height, int colors, int wins) {
         super(width, height);
@@ -15,6 +14,18 @@ public class Game extends Field {
         this.wins = wins;
         insertedRow = new int[width];
         reset();
+    }
+
+    public Game(Game g) {
+        super(g);
+        colors = g.colors;
+        wins = g.wins;
+        inserted = g.inserted;
+        currentColor = g.currentColor;
+        insertedRow = new int[getWidth()];
+        for(int x=0; x < getWidth(); ++x){
+            insertedRow[x] = g.insertedRow[x];
+        }
     }
 
     public void reset() {
@@ -42,6 +53,10 @@ public class Game extends Field {
             currentColor = colors;
         }
         --inserted;
+    }
+
+    public int getColors() {
+        return colors;
     }
 
     public int getCurrentColor() {

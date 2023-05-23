@@ -16,6 +16,18 @@ public class Field {
         _reset();
     }
 
+    public Field(Field f) {
+        width = f.width;
+        height = f.height;
+        size = f.size;
+        field = new int[width][height];
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                field[x][y] = f.field[x][y];
+            }
+        }
+    }
+
     public int getWidth() {
         return width;
     }
