@@ -15,6 +15,13 @@
             "name": "App",
             "request": "launch",
             "mainClass": "App"
+        },
+        {
+            "type": "java",
+            "name": "Simple",
+            "request": "launch",
+            "mainClass": "Simple"
         }
+
     ]
 }

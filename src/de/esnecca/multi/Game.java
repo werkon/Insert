@@ -23,7 +23,7 @@ public class Game extends Field {
         inserted = g.inserted;
         currentColor = g.currentColor;
         insertedRow = new int[getWidth()];
-        for(int x=0; x < getWidth(); ++x){
+        for (int x = 0; x < getWidth(); ++x) {
             insertedRow[x] = g.insertedRow[x];
         }
     }
@@ -266,7 +266,7 @@ public class Game extends Field {
     public void print() {
         System.out.print("   ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print(" " + x);
+            System.out.print(" " + (x + 1));
         }
         System.out.println("");
         System.out.print("   ");

@@ -62,7 +62,7 @@ public class Field {
 
     public void print() {
         for (int y = height - 1; y >= 0; --y) {
-            System.out.print(y + " -");
+            System.out.print((y + 1) + " -");
             for (int x = 0; x < width; ++x) {
                 System.out.print(" " + get(x, y));
             }
