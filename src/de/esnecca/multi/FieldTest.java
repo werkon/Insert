@@ -18,6 +18,19 @@ public class FieldTest {
     }
 
     @Test
+    public void testCopyConstructor() {
+        field.set(0, 0, 1);
+        Field f = new Field(field);
+        assertEquals(1, f.get(0, 0));
+        field.set(0, 0, 2);
+        assertEquals(2, field.get(0, 0));
+        assertEquals(1, f.get(0, 0));
+
+        assertEquals(f.getWidth(), field.getWidth());
+        assertEquals(f.getHeight(), field.getHeight());
+    }
+
+    @Test
     public void testGetHeight() {
         assertEquals(height, field.getHeight());
     }

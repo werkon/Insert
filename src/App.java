@@ -4,7 +4,6 @@ import de.esnecca.multi.Game;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
 
         Game game = new Game(7,6,2,4);
 
@@ -24,7 +23,6 @@ public class App {
                 if( !game.isFull(x)){
                     if( game.test(x) ){
                         game.insert(x);
-                        //game.print();
                         stop = true;
                     }else{
                         game.insert(x);

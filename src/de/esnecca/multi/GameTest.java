@@ -32,30 +32,35 @@ public class GameTest {
         assertEquals(1, game.getInserted(0));
         assertEquals(2, g.getInserted(0));
 
-        assertEquals(1, game.get(0,0));
-        assertEquals(2, g.get(0,1));
+        assertEquals(1, game.get(0, 0));
 
-        assertEquals(2, game.getCurrentColor());
+        if (g.getColors() >= 2) {
+            assertEquals(2, g.get(0, 1));
+        }
+
+        if (g.getColors() >= 2) {
+            assertEquals(2, game.getCurrentColor());
+        }
         assertEquals(1, g.getCurrentColor());
 
-        assertEquals(g.getWidth(),game.getWidth());
-        assertEquals(g.getHeight(),game.getHeight());
-        assertEquals(g.getSize(),game.getSize());
-        assertEquals(g.getWidth(),game.getWidth());
-        assertEquals(g.getColors(),game.getColors());
-
+        assertEquals(g.getWidth(), game.getWidth());
+        assertEquals(g.getHeight(), game.getHeight());
+        assertEquals(g.getSize(), game.getSize());
+        assertEquals(g.getWidth(), game.getWidth());
+        assertEquals(g.getColors(), game.getColors());
     }
-
 
     @Test
     public void testGetCurrentColor() {
         int cc = game.getCurrentColor();
         assertEquals(1, game.getCurrentColor());
         game.insert(width - 1);
-        if( ++cc > colors ) cc = 1;
+        if (++cc > colors)
+            cc = 1;
         assertEquals(cc, game.getCurrentColor());
         game.insert(width - 1);
-        if( ++cc > colors ) cc = 1;
+        if (++cc > colors)
+            cc = 1;
         assertEquals(cc, game.getCurrentColor());
     }
 
@@ -92,19 +97,25 @@ public class GameTest {
         assertEquals(cc, game.getCurrentColor());
         assertEquals(0, game.get(width - 1, game.getInserted(width - 1)));
         game.insert(width - 1);
-        cco = cc; if( ++cc > colors ) cc = 1;
+        cco = cc;
+        if (++cc > colors)
+            cc = 1;
         assertEquals(1, game.getInserted());
         assertEquals(1, game.getInserted(width - 1));
         assertEquals(cc, game.getCurrentColor());
         assertEquals(cco, game.get(width - 1, game.getInserted(width - 1) - 1));
         game.insert(width - 1);
-        cco = cc; if( ++cc > colors ) cc = 1;
+        cco = cc;
+        if (++cc > colors)
+            cc = 1;
         assertEquals(2, game.getInserted());
         assertEquals(2, game.getInserted(width - 1));
         assertEquals(cc, game.getCurrentColor());
         assertEquals(cco, game.get(width - 1, game.getInserted(width - 1) - 1));
         game.insert(0);
-        cco = cc; if( ++cc > colors ) cc = 1;
+        cco = cc;
+        if (++cc > colors)
+            cc = 1;
         assertEquals(3, game.getInserted());
         assertEquals(1, game.getInserted(0));
         assertEquals(2, game.getInserted(width - 1));
@@ -144,16 +155,19 @@ public class GameTest {
 
         game.insert(width - 1);
         int c0 = cc;
-        if( ++cc > colors ) cc = 1;
+        if (++cc > colors)
+            cc = 1;
         game.insert(width - 1);
         int c1 = cc;
-        if( ++cc > colors ) cc = 1;
+        if (++cc > colors)
+            cc = 1;
         game.insert(0);
         int c2 = cc;
-        if( ++cc > colors ) cc = 1;
+        if (++cc > colors)
+            cc = 1;
 
-        //       2
-        // 1     1
+        // 2
+        // 1 1
 
         assertEquals(3, game.getInserted());
         assertEquals(1, game.getInserted(0));
@@ -164,10 +178,11 @@ public class GameTest {
         assertEquals(c0, game.get(width - 1, game.getInserted(width - 1) - 2));
 
         game.remove(0);
-        if( --cc < 1 ) cc = colors;
+        if (--cc < 1)
+            cc = colors;
 
-        //       2
-        //       1
+        // 2
+        // 1
 
         assertEquals(2, game.getInserted());
         assertEquals(0, game.getInserted(0));
@@ -175,13 +190,14 @@ public class GameTest {
         assertEquals(cc, game.getCurrentColor());
         assertEquals(c1, game.get(width - 1, game.getInserted(width - 1) - 1));
         assertEquals(c0, game.get(width - 1, game.getInserted(width - 1) - 2));
-        assertEquals(0, game.get(0,0));
+        assertEquals(0, game.get(0, 0));
 
         game.remove(width - 1);
-        if( --cc < 1 ) cc = colors;
+        if (--cc < 1)
+            cc = colors;
 
         //
-        //       1
+        // 1
 
         assertEquals(1, game.getInserted());
         assertEquals(0, game.getInserted(0));
@@ -191,7 +207,8 @@ public class GameTest {
         assertEquals(c0, game.get(width - 1, game.getInserted(width - 1) - 1));
 
         game.remove(width - 1);
-        if( --cc < 1 ) cc = colors;
+        if (--cc < 1)
+            cc = colors;
 
         //
         //
@@ -222,7 +239,7 @@ public class GameTest {
     @Test
     public void testTest() {
 
-        if (width == 7 && height == 6 && wins == 4) {
+        if (width == 7 && height == 6 && wins == 4 && colors == 2) {
 
             // Horizontal
 
