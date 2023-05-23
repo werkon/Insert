@@ -21,6 +21,12 @@
             "name": "Simple",
             "request": "launch",
             "mainClass": "Simple"
+        },
+        {
+            "type": "java",
+            "name": "Think",
+            "request": "launch",
+            "mainClass": "Think"
         }
 
     ]
