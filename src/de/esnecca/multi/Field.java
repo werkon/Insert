@@ -7,7 +7,7 @@ public class Field {
     private int size;
     private int[][] field;
 
-    public Field( int width, int height ){
+    public Field(int width, int height) {
         this.width = width;
         this.height = height;
         this.size = width * height;
@@ -28,34 +28,34 @@ public class Field {
         return size;
     }
 
-    private void _reset(){
-        for( int x = 0; x < width; ++x ){
-            for( int y = 0; y < height; ++y ){
-                set( x, y, 0);
+    private void _reset() {
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                set(x, y, 0);
             }
         }
     }
 
-    public void reset(){
+    public void reset() {
         _reset();
     }
 
-    public void set(int x, int y, int color){
+    public void set(int x, int y, int color) {
         field[x][y] = color;
     }
 
-    public int get(int x, int y){
+    public int get(int x, int y) {
         return field[x][y];
     }
 
-    public void print(){
-        for( int y = height - 1; y >= 0; --y){
-            System.out.print( y + " -");
-            for( int x = 0; x < width; ++x){
-                System.out.print(" " + get(x,y) );
+    public void print() {
+        for (int y = height - 1; y >= 0; --y) {
+            System.out.print(y + " -");
+            for (int x = 0; x < width; ++x) {
+                System.out.print(" " + get(x, y));
             }
             System.out.println("");
         }
     }
-    
+
 }

@@ -9,10 +9,10 @@ import org.junit.Test;
 
 public class GameTest {
 
-    private final int width = 3;
-    private final int height = 3;
-    private final int colors = 3;
-    private final int wins = 3;
+    private final int width = 7;
+    private final int height = 6;
+    private final int colors = 2;
+    private final int wins = 4;
 
     private Game game;
 
@@ -115,50 +115,57 @@ public class GameTest {
     @Test
     public void testRemove() {
         int cc = game.getCurrentColor();
-        int cco = cc;
 
         game.insert(width - 1);
-        cco = cc; if( ++cc > colors ) cc = 1;
+        int c0 = cc;
+        if( ++cc > colors ) cc = 1;
         game.insert(width - 1);
-        cco = cc; if( ++cc > colors ) cc = 1;
+        int c1 = cc;
+        if( ++cc > colors ) cc = 1;
         game.insert(0);
-        cco = cc; if( ++cc > colors ) cc = 1;
+        int c2 = cc;
+        if( ++cc > colors ) cc = 1;
 
-        // 2
-        // 1 1
+        //       2
+        // 1     1
 
         assertEquals(3, game.getInserted());
         assertEquals(1, game.getInserted(0));
         assertEquals(2, game.getInserted(width - 1));
-        assertEquals(cco, game.getCurrentColor());
-        assertEquals(1, game.get(0, 0));
-        assertEquals(2, game.get(width - 1, game.getInserted(width - 1) - 1));
+        assertEquals(cc, game.getCurrentColor());
+        assertEquals(c2, game.get(0, 0));
+        assertEquals(c1, game.get(width - 1, game.getInserted(width - 1) - 1));
+        assertEquals(c0, game.get(width - 1, game.getInserted(width - 1) - 2));
 
         game.remove(0);
+        if( --cc < 1 ) cc = colors;
 
-        // 2
-        // 1
+        //       2
+        //       1
 
         assertEquals(2, game.getInserted());
         assertEquals(0, game.getInserted(0));
         assertEquals(2, game.getInserted(width - 1));
-        assertEquals(1, game.getCurrentColor());
-        assertEquals(0, game.get(0, 0));
-        assertEquals(2, game.get(width - 1, game.getInserted(width - 1) - 1));
+        assertEquals(cc, game.getCurrentColor());
+        assertEquals(c1, game.get(width - 1, game.getInserted(width - 1) - 1));
+        assertEquals(c0, game.get(width - 1, game.getInserted(width - 1) - 2));
+        assertEquals(0, game.get(0,0));
 
         game.remove(width - 1);
+        if( --cc < 1 ) cc = colors;
 
         //
-        // 1
+        //       1
 
         assertEquals(1, game.getInserted());
         assertEquals(0, game.getInserted(0));
         assertEquals(1, game.getInserted(width - 1));
-        assertEquals(2, game.getCurrentColor());
-        assertEquals(0, game.get(0, 0));
-        assertEquals(1, game.get(width - 1, game.getInserted(width - 1) - 1));
+        assertEquals(cc, game.getCurrentColor());
+        assertEquals(0, game.get(width - 1, game.getInserted(width - 1)));
+        assertEquals(c0, game.get(width - 1, game.getInserted(width - 1) - 1));
 
         game.remove(width - 1);
+        if( --cc < 1 ) cc = colors;
 
         //
         //
@@ -166,10 +173,8 @@ public class GameTest {
         assertEquals(0, game.getInserted());
         assertEquals(0, game.getInserted(0));
         assertEquals(0, game.getInserted(width - 1));
-        assertEquals(1, game.getCurrentColor());
-        assertEquals(0, game.get(0, 0));
+        assertEquals(cc, game.getCurrentColor());
         assertEquals(0, game.get(width - 1, 0));
-
     }
 
     @Test
@@ -186,7 +191,6 @@ public class GameTest {
             assertEquals(false, game.isFull(x));
             assertEquals(0, game.getInserted(x));
         }
-
     }
 
     @Test
@@ -283,34 +287,24 @@ public class GameTest {
 
             assertEquals(false, game.test(0));
             game.insert(0);
-
             assertEquals(false, game.test(1));
             game.insert(1);
-
             assertEquals(false, game.test(1));
             game.insert(1);
-
             assertEquals(false, game.test(2));
             game.insert(2);
-
             assertEquals(false, game.test(2));
             game.insert(2);
-
             assertEquals(false, game.test(3));
             game.insert(3);
-
             assertEquals(false, game.test(2));
             game.insert(2);
-
             assertEquals(false, game.test(3));
             game.insert(3);
-
             assertEquals(false, game.test(3));
             game.insert(3);
-
             assertEquals(false, game.test(0));
             game.insert(0);
-
             assertEquals(true, game.test(3));
             assertEquals(false, game.test());
             game.insert(3);
@@ -342,28 +336,20 @@ public class GameTest {
 
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 1));
             game.insert(width - 1);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 1));
             game.insert(width - 1);
-
             assertEquals(true, game.test(width - 1));
             assertEquals(false, game.test());
             game.insert(width - 1);
@@ -397,28 +383,20 @@ public class GameTest {
 
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 1));
             game.insert(width - 1);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 1));
             game.insert(width - 1);
-
             assertEquals(true, game.test(width - 1));
             assertEquals(false, game.test());
             game.insert(width - 1);
@@ -432,38 +410,27 @@ public class GameTest {
 
             assertEquals(false, game.test(3));
             game.insert(3);
-
             assertEquals(false, game.test(2));
             game.insert(2);
-
             assertEquals(false, game.test(2));
             game.insert(2);
-
             assertEquals(false, game.test(1));
             game.insert(1);
-
             assertEquals(false, game.test(1));
             game.insert(1);
-
             assertEquals(false, game.test(0));
             game.insert(0);
-
             assertEquals(false, game.test(1));
             game.insert(1);
-
             assertEquals(false, game.test(0));
             game.insert(0);
-
             assertEquals(false, game.test(0));
             game.insert(0);
-
             assertEquals(false, game.test(3));
             game.insert(3);
-
             assertEquals(true, game.test(0));
             assertEquals(false, game.test());
             game.insert(0);
-
             assertEquals(4, game.getInserted(0));
             assertEquals(true, game.test());
 
@@ -490,31 +457,22 @@ public class GameTest {
             game.insert(width - 4);
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(false, game.test(width - 1));
             game.insert(width - 1);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(true, game.test(width - 4));
             assertEquals(false, game.test());
             game.insert(width - 4);
@@ -549,28 +507,20 @@ public class GameTest {
 
             assertEquals(false, game.test(width - 1));
             game.insert(width - 1);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 2));
             game.insert(width - 2);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(false, game.test(width - 3));
             game.insert(width - 3);
-
             assertEquals(false, game.test(width - 4));
             game.insert(width - 4);
-
             assertEquals(true, game.test(width - 4));
             assertEquals(false, game.test());
             game.insert(width - 4);
@@ -694,8 +644,6 @@ public class GameTest {
                     }
                 }
             }
-
         }
-
     }
 }

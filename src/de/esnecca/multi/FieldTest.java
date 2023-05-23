@@ -42,7 +42,7 @@ public class FieldTest {
         field.reset();
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
-                assertEquals( 0,  field.get(x, y) );
+                assertEquals(0, field.get(x, y));
             }
         }
     }
@@ -61,7 +61,7 @@ public class FieldTest {
         }
         for (int x = 0; x < width; ++x) {
             for (int y = 0; y < height; ++y) {
-                assertEquals( x * height + y, field.get(x, y));
+                assertEquals(x * height + y, field.get(x, y));
             }
         }
     }

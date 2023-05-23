@@ -142,7 +142,7 @@ public class Game extends Field {
                 if (color > 0) {
                     boolean eq = true;
                     for (int w = 1; w < wins; ++w) { // 1 2 3
-                        if (get(x + w, y + wins - w - 1 ) != color) {
+                        if (get(x + w, y + wins - w - 1) != color) {
                             eq = false;
                             break;
                         }
