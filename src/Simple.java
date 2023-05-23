@@ -1,17 +1,27 @@
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
+import de.esnecca.multi.Game;
 import de.esnecca.multi.History;
 import de.esnecca.multi.SimpleThink;
 
 public class Simple {
     public static void main(String[] args) throws Exception {
 
-        History history = new History(5, 5, 2, 4);
+        History history = new History(4, 4, 2, 4);
+
+
+
         Scanner keyboard = new Scanner(System.in);
 
         while (true) {
             history.print();
+            BigInteger bi = history.getBigInteger();
+            Game game = new Game(history);
+            System.out.println(bi.toString(10));
+            game.fromBigInteger(bi);
+            game.print();
 
             SimpleThink simpleThink = new SimpleThink(history);
 
@@ -27,9 +37,9 @@ public class Simple {
             if( !history.isFull(3)){
                 System.out.println( "4:" + simpleThink.think(3) );
             }
-            if( !history.isFull(4)){
-                System.out.println( "5:" + simpleThink.think(4) );
-            }
+            // if( !history.isFull(4)){
+            //     //System.out.println( "5:" + simpleThink.think(4) );
+            // }
 
             String input = keyboard.nextLine();
 

@@ -1,5 +1,7 @@
 package de.esnecca.multi;
 
+import java.math.BigInteger;
+
 public class Game extends Field {
 
     private int colors;
@@ -286,5 +288,43 @@ public class Game extends Field {
         }
         System.out.println("");
         System.out.println("");
+    }
+
+    public BigInteger getBigInteger() {
+        BigInteger i = BigInteger.valueOf(0);
+        BigInteger m = BigInteger.valueOf(1);
+        for (int x = 0; x < getWidth(); ++x) {
+            for (int y = 0; y < getInserted(x); ++y) {
+                i = i.add(m.multiply(BigInteger.valueOf(get(x, y) - 1)));
+                m = m.multiply(BigInteger.valueOf(getColors()));
+            }
+        }
+        for (int x = 0; x < getWidth(); ++x) {
+            i = i.add(m.multiply(BigInteger.valueOf(getInserted(x))));
+            m = m.multiply(BigInteger.valueOf(getHeight()));
+        }
+        return i;
+    }
+
+    public void fromBigInteger(BigInteger bi) {
+        reset();
+        BigInteger d = BigInteger.valueOf(getHeight());
+        for (int x = getWidth() - 1; x >= 0; --x) {
+            BigInteger[] dr = bi.divideAndRemainder(d);
+            int i = dr[0].intValueExact();
+            insertedRow[x] = i;
+            inserted += i;
+            bi = dr[1];
+        }
+
+        d = BigInteger.valueOf(getColors());
+        for (int x = getWidth() - 1; x >= 0; --x) {
+            for (int y = getInserted(x); y >= 0; --y) {
+                BigInteger[] dr = bi.divideAndRemainder(d);
+                int i = dr[0].intValueExact() + 1;
+                set(x, y, i);
+                bi = dr[1];
+            }
+        }
     }
 }
