@@ -7,7 +7,7 @@ import de.esnecca.multi.SimpleThink;
 public class Simple {
     public static void main(String[] args) throws Exception {
 
-        History history = new History(4, 4, 2, 3);
+        History history = new History(5, 5, 2, 4);
         Scanner keyboard = new Scanner(System.in);
 
         while (true) {
@@ -26,6 +26,9 @@ public class Simple {
             }
             if( !history.isFull(3)){
                 System.out.println( "4:" + simpleThink.think(3) );
+            }
+            if( !history.isFull(4)){
+                System.out.println( "5:" + simpleThink.think(4) );
             }
 
             String input = keyboard.nextLine();
