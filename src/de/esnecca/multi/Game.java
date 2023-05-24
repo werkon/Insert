@@ -265,6 +265,13 @@ public class Game extends Field {
         return false;
     }
 
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public void print() {
         System.out.print("   ");
         for (int x = 0; x < getWidth(); ++x) {
@@ -292,38 +299,44 @@ public class Game extends Field {
 
     public BigInteger getBigInteger() {
         BigInteger i = BigInteger.valueOf(0);
-        BigInteger m = BigInteger.valueOf(1);
+
+        BigInteger m = BigInteger.valueOf(getColors());
         for (int x = 0; x < getWidth(); ++x) {
             for (int y = 0; y < getInserted(x); ++y) {
-                i = i.add(m.multiply(BigInteger.valueOf(get(x, y) - 1)));
-                m = m.multiply(BigInteger.valueOf(getColors()));
+                i = i.multiply(m);
+                System.out.println("m: " + m);
+                i = i.add(BigInteger.valueOf(get(x, y) - 1));
+                System.out.println("i: " + i);
             }
         }
+        m = BigInteger.valueOf(getHeight() + 1);
         for (int x = 0; x < getWidth(); ++x) {
-            i = i.add(m.multiply(BigInteger.valueOf(getInserted(x))));
-            m = m.multiply(BigInteger.valueOf(getHeight()));
+            i = i.multiply(m);
+            System.out.println("-m: " + m);
+            i = i.add(BigInteger.valueOf(getInserted(x)));
+            System.out.println("-i: " + i);
         }
         return i;
     }
 
     public void fromBigInteger(BigInteger bi) {
         reset();
-        BigInteger d = BigInteger.valueOf(getHeight());
+        BigInteger d = BigInteger.valueOf(getHeight() + 1);
         for (int x = getWidth() - 1; x >= 0; --x) {
             BigInteger[] dr = bi.divideAndRemainder(d);
-            int i = dr[0].intValueExact();
+            int i = dr[1].intValueExact();
             insertedRow[x] = i;
             inserted += i;
-            bi = dr[1];
+            bi = dr[0];
         }
 
         d = BigInteger.valueOf(getColors());
         for (int x = getWidth() - 1; x >= 0; --x) {
-            for (int y = getInserted(x); y >= 0; --y) {
+            for (int y = getInserted(x) - 1; y >= 0; --y) {
                 BigInteger[] dr = bi.divideAndRemainder(d);
-                int i = dr[0].intValueExact() + 1;
+                int i = dr[1].intValueExact() + 1;
                 set(x, y, i);
-                bi = dr[1];
+                bi = dr[0];
             }
         }
     }

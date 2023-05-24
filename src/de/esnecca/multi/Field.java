@@ -60,6 +60,26 @@ public class Field {
         return field[x][y];
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(!super.equals(obj)){
+            return false;
+        }
+        Field f = (Field) obj;
+        if( f.width != width ){
+            return false;
+        }
+        if( f.height != height ){
+            return false;
+        }
+        if( f.size != size ){
+            return false;
+        }
+
+        return true;
+    }
+
+
     public void print() {
         for (int y = height - 1; y >= 0; --y) {
             System.out.print((y + 1) + " -");
