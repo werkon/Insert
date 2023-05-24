@@ -295,14 +295,12 @@ public class Game extends Field {
         BigInteger m = BigInteger.valueOf(1);
         for (int x = 0; x < getWidth(); ++x) {
             for (int y = 0; y < getInserted(x); ++y) {
-                i = i.multiply(m);
-                i = i.add(BigInteger.valueOf(get(x, y) - 1));
+                i = i.add(m.multiply(BigInteger.valueOf(get(x, y) - 1)));
                 m = m.multiply(BigInteger.valueOf(getColors()));
             }
         }
         for (int x = 0; x < getWidth(); ++x) {
-            i = i.multiply(m);
-            i = i.add(BigInteger.valueOf(getInserted(x)));
+            i = i.add(m.multiply(BigInteger.valueOf(getInserted(x))));
             m = m.multiply(BigInteger.valueOf(getHeight()));
         }
         return i;
@@ -321,7 +319,7 @@ public class Game extends Field {
 
         d = BigInteger.valueOf(getColors());
         for (int x = getWidth() - 1; x >= 0; --x) {
-            for (int y = getInserted(x) - 1; y >= 0; --y) {
+            for (int y = getInserted(x); y >= 0; --y) {
                 BigInteger[] dr = bi.divideAndRemainder(d);
                 int i = dr[0].intValueExact() + 1;
                 set(x, y, i);
