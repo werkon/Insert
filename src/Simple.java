@@ -2,6 +2,7 @@
 import java.math.BigInteger;
 import java.util.Scanner;
 
+import de.esnecca.multi.HashEntry;
 import de.esnecca.multi.History;
 import de.esnecca.multi.SimpleThink;
 
@@ -10,20 +11,13 @@ public class Simple {
 
         History history = new History(7, 6, 2, 4);
 
-
+        HashEntry[] hashEntries = new HashEntry[1000*10000];
 
         Scanner keyboard = new Scanner(System.in);
 
         while (true) {
             history.print();
-            BigInteger bi1 = history.getBigInteger();
-            System.out.println(bi1.toString(10));
-            BigInteger bi2 = history.getBigIntegerRevert();
-            System.out.println(bi2.toString(10));
-
-            BigInteger bi3 = history.getSmallestBigInteger();
-            System.out.println(bi3.toString(10));
-
+            System.out.println(hashEntries[5]);
 
             SimpleThink simpleThink = new SimpleThink(history);
 
