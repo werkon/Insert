@@ -1,41 +1,39 @@
-
-import java.math.BigInteger;
 import java.util.Scanner;
 
-import de.esnecca.multi.HashEntry;
 import de.esnecca.multi.History;
 import de.esnecca.multi.SimpleThink;
 
-public class Simple {
+public class Threads {
+    
     public static void main(String[] args) throws Exception {
 
-        History history = new History(7, 6, 2, 4);
-
-        HashEntry[] hashEntries = new HashEntry[1000*1000];
-
+        History history = new History(5, 4, 2, 4);
         Scanner keyboard = new Scanner(System.in);
 
         while (true) {
             history.print();
-            System.out.println(hashEntries[5]);
 
-            SimpleThink simpleThink = new SimpleThink(history,0);
+            Thread[] threads = new Thread[history.getWidth()];
+            for( int x = 0; x < history.getWidth(); ++x){
+                if(!history.isFull(x)){
+                    SimpleThink simpleThink = new SimpleThink(history, x);
+                    Thread thread = new Thread(simpleThink);
+                    threads[x] = thread;
+                    thread.start();
+                }
+            }
 
-            // if( !history.isFull(0)){
-            //     System.out.println( "1:" + simpleThink.think(0) );
-            // }
-            // if( !history.isFull(1)){
-            //     System.out.println( "2:" + simpleThink.think(1) );
-            // }
-            // if( !history.isFull(2)){
-            //     System.out.println( "3:" + simpleThink.think(2) );
-            // }
-            // if( !history.isFull(3)){
-            //     System.out.println( "4:" + simpleThink.think(3) );
-            // }
-            // // if( !history.isFull(4)){
-            //     //System.out.println( "5:" + simpleThink.think(4) );
-            // }
+            boolean stop = false;
+            while( !stop ){
+                stop = true;
+                for( int x = 0; x < history.getWidth(); ++x){
+                    if( threads[x] != null && threads[x].isAlive() ){
+                        stop = false;
+                    }
+                }
+                Thread.sleep(1000);
+//                System.out.println("sksks");
+            }
 
             String input = keyboard.nextLine();
 
@@ -69,5 +67,5 @@ public class Simple {
 
         }
         keyboard.close();
-    }
+    }   
 }

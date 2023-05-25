@@ -24,9 +24,9 @@
         },
         {
             "type": "java",
-            "name": "Think",
+            "name": "Threads",
             "request": "launch",
-            "mainClass": "Think"
+            "mainClass": "Threads"
         }
 
     ]

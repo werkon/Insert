@@ -1,11 +1,37 @@
 package de.esnecca.multi;
 
-public class SimpleThink {
+import java.math.BigInteger;
+
+public class SimpleThink implements Runnable{
     
     private Game game;
+    private int x;
+    private HashEntry[] hashEntries;
+    private int prime;
+    private BigInteger bigPrime;
 
-    public SimpleThink( Game game ){
+    private int prime(int i){
+        for( ; i > 0; --i ){
+            int j;
+            for( j = 2; j < i; ++j){
+                if( i % j == 0 ){
+                    break;
+                }
+            }
+            if( j >= i ){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public SimpleThink( Game game, int x ){
         this.game = new Game(game);
+        this.x = x;
+        this.prime = prime(1000 * 1000 * 250);
+        this.bigPrime = BigInteger.valueOf(prime);
+
+        hashEntries = new HashEntry[prime];
     }
 
     // Positiver Wert:
@@ -32,8 +58,22 @@ public class SimpleThink {
             // System.out.println("********************************************");
             return 0;
         }
+
         game.insert(x);
-        
+
+        BigInteger bi = null;
+        int index = 0;
+        if( game.getInserted() < game.getSize() / 2 ){
+            bi = game.getSmallestBigInteger();
+            index = bi.mod(bigPrime).intValue();
+            HashEntry hashEntry = hashEntries[index];
+            if( hashEntry != null && hashEntry.getValue().equals(bi) ){
+                game.remove(x);
+                return hashEntry.getResult();
+            }
+        }
+
+
         int kleinstesPositivesR = 0;
         int groesstesNegativesR = 0;
         boolean unentschieden = false;
@@ -65,8 +105,12 @@ public class SimpleThink {
             // System.out.println("e: " + ( ( kleinstesPositivesR + 1 ) * (-1)  ));
             // System.out.println("********************************************");
 
-
-            return ( kleinstesPositivesR + 1 ) * (-1);
+            int ret = ( kleinstesPositivesR + 1 ) * (-1);
+            if( bi != null){
+                HashEntry hashEntry = new HashEntry(bi, ret);
+                hashEntries[index] = hashEntry;
+            }
+            return ret;
         }
         if(unentschieden){
             // System.out.println("x: " + x + " c: " + game.getCurrentColor());
@@ -74,8 +118,12 @@ public class SimpleThink {
             // System.out.println("e: " + 0);
             // System.out.println("********************************************");
     
-
-            return 0;
+            int ret = 0;
+            if( bi != null){
+                HashEntry hashEntry = new HashEntry(bi, ret);
+                hashEntries[index] = hashEntry;
+            }
+            return ret;
         }
 
         // System.out.println("x: " + x + " c: " + game.getCurrentColor());
@@ -83,8 +131,18 @@ public class SimpleThink {
         // System.out.println("e: " + ((groesstesNegativesR * (-1)) + 1));
         // System.out.println("********************************************");
 
+        int ret = (groesstesNegativesR * (-1)) + 1;
+        if( bi != null){
+            HashEntry hashEntry = new HashEntry(bi, ret);
+            hashEntries[index] = hashEntry;
+        }
+        return ret;
+    }
 
-        return (groesstesNegativesR * (-1)) + 1;
+    @Override
+    public void run() {
+        int ret = think(x);
+        System.out.println("x: " + (x + 1) + " r: " +ret);
     }
 
 
