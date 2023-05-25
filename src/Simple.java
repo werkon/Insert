@@ -2,7 +2,6 @@
 import java.math.BigInteger;
 import java.util.Scanner;
 
-import de.esnecca.multi.Game;
 import de.esnecca.multi.History;
 import de.esnecca.multi.SimpleThink;
 
@@ -17,11 +16,14 @@ public class Simple {
 
         while (true) {
             history.print();
-            BigInteger bi = history.getBigInteger();
-            Game game = new Game(history);
-            System.out.println(bi.toString(10));
-            game.fromBigInteger(bi);
-            game.print();
+            BigInteger bi1 = history.getBigInteger();
+            System.out.println(bi1.toString(10));
+            BigInteger bi2 = history.getBigIntegerRevert();
+            System.out.println(bi2.toString(10));
+
+            BigInteger bi3 = history.getSmallestBigInteger();
+            System.out.println(bi3.toString(10));
+
 
             SimpleThink simpleThink = new SimpleThink(history);
 
@@ -45,6 +47,10 @@ public class Simple {
 
             if ("q".equals(input)) {
                 break;
+            }
+
+            if ("c".equals(input)) {
+                history.reset();
             }
 
             if ("r".equals(input)) {

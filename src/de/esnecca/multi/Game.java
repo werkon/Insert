@@ -354,6 +354,18 @@ public class Game extends Field {
         return i;
     }
 
+    public BigInteger getSmallestBigInteger() {
+        BigInteger b1 = getBigInteger();
+        BigInteger b2 = getBigIntegerRevert();
+
+        if( b1.compareTo(b2) < 0 ){
+            return b1;
+        }
+        else{
+            return b2;
+        } 
+    }
+
     public void fromBigInteger(BigInteger bi) {
         reset();
         BigInteger d = BigInteger.valueOf(getHeight() + 1);

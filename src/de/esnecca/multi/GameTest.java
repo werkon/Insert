@@ -738,9 +738,6 @@ public class GameTest {
         BigInteger bi0 = game.getBigInteger();
         BigInteger bi1 = game.getBigIntegerRevert();
 
-        System.out.println(bi0.toString(10));
-        System.out.println(bi1.toString(10));
-
         assertFalse(bi0.equals(bi1));
 
         Game g2 = new Game(width, height, colors, wins);
@@ -789,5 +786,26 @@ public class GameTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void testGetSmallestBigInteger() {
+        game.insert(0);
+        game.insert(0);
+        game.insert(0);
+        BigInteger bi1 = game.getSmallestBigInteger();
+
+        Game g = new Game(width, height, colors, wins);
+        g.insert(width -1);
+        g.insert(width -1);
+        g.insert(width -1);
+        BigInteger bi2 = g.getSmallestBigInteger();
+
+        assertTrue(bi1.equals(bi2));
+
+        Game g2 = new Game(width, height, colors, wins);
+        g2.fromBigInteger(bi1);
+        //g2.print();
+
     }
 }
