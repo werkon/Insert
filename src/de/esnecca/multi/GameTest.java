@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 import org.junit.Before;
@@ -689,8 +690,8 @@ public class GameTest {
             }
         }
 
+        Random rn = new Random();
         for (int i = 0; i < 1000; ++i) {
-            Random rn = new Random();
             System.out.println(i);
             game.reset();
             boolean stop = false;
@@ -715,4 +716,36 @@ public class GameTest {
             }
         }
     }
+
+    @Test
+    public void testGetBigInteger() {
+
+        Random rn = new Random();
+        for (int i = 0; i < 1000; ++i) {
+            System.out.println(i);
+            game.reset();
+            boolean stop = false;
+            while (!stop) {
+                if (game.isFull()) {
+                    stop = true;
+                }
+                int x = rn.nextInt(width);
+                if (!game.isFull(x)) {
+                    if (game.test(x)) {
+                        game.insert(x);
+                        stop = true;
+                    } else {
+                        game.insert(x);
+                    }
+                }
+                BigInteger bi = game.getBigInteger();
+                Game g = new Game(width, height, colors, wins);
+                g.fromBigInteger(bi);
+
+                assertTrue(g.equals(game));
+                assertTrue(game.equals(g));
+            }
+        }
+    }
+
 }
