@@ -62,23 +62,25 @@ public class Field {
 
     @Override
     public boolean equals(Object obj) {
-        if(!super.equals(obj)){
-            return false;
-        }
         Field f = (Field) obj;
-        if( f.width != width ){
+        if (f.width != width) {
             return false;
         }
-        if( f.height != height ){
+        if (f.height != height) {
             return false;
         }
-        if( f.size != size ){
+        if (f.size != size) {
             return false;
         }
-
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                if (f.field[x][y] != field[x][y]) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
-
 
     public void print() {
         for (int y = height - 1; y >= 0; --y) {

@@ -1,6 +1,8 @@
 package de.esnecca.multi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,9 @@ public class HistoryTest {
         history.insert(0);
         History h = new History(history);
 
+        assertTrue(history.equals(h));
+        assertTrue(h.equals(history));
+
         h.insert(0);
 
         assertEquals(1, history.getInserted());
@@ -44,6 +49,27 @@ public class HistoryTest {
         assertEquals(0, h.getInserted());
         assertEquals(1, history.getInserted(0));
         assertEquals(0, h.getInserted(0));
+
+    }
+
+    @Test
+    public void testEquals() {
+        history.insert(1);
+        history.insert(1);
+        History h = new History(history);
+
+        assertTrue(history.equals(h));
+        assertTrue(h.equals(history));
+
+        history.remove();
+
+        assertFalse(history.equals(h));
+        assertFalse(h.equals(history));
+
+        h.remove();
+
+        assertTrue(history.equals(h));
+        assertTrue(h.equals(history));
     }
 
     @Test

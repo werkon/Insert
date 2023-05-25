@@ -265,11 +265,32 @@ public class Game extends Field {
         return false;
     }
 
-
-
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (!super.equals(obj)) {
+            return false;
+        }
+        Game g = (Game) obj;
+
+        if (g.colors != colors) {
+            return false;
+        }
+        if (g.wins != wins) {
+            return false;
+        }
+        if (g.inserted != inserted) {
+            return false;
+        }
+        if (g.currentColor != currentColor) {
+            return false;
+        }
+
+        for (int x = 0; x < getWidth(); ++x) {
+            if (g.insertedRow[x] != insertedRow[x]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void print() {

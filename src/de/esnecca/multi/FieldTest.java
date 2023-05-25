@@ -1,6 +1,8 @@
 package de.esnecca.multi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,12 +24,34 @@ public class FieldTest {
         field.set(0, 0, 1);
         Field f = new Field(field);
         assertEquals(1, f.get(0, 0));
+
+        assertTrue(field.equals(f));
+        assertTrue(f.equals(field));
+
         field.set(0, 0, 2);
         assertEquals(2, field.get(0, 0));
         assertEquals(1, f.get(0, 0));
 
         assertEquals(f.getWidth(), field.getWidth());
         assertEquals(f.getHeight(), field.getHeight());
+    }
+
+    @Test
+    public void testEquals() {
+        field.set(0, 0, 1);
+        Field f = new Field(field);
+
+        assertTrue(field.equals(f));
+        assertTrue(f.equals(field));
+
+        field.set(0, 0, 2);
+        assertFalse(field.equals(f));
+        assertFalse(f.equals(field));
+
+
+        f.set(0, 0, 2);
+        assertTrue(field.equals(f));
+        assertTrue(f.equals(field));
     }
 
     @Test

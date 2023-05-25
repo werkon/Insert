@@ -19,6 +19,22 @@ public class History extends Game {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(!super.equals(obj)){
+            return false;
+        }
+        History h = (History) obj;
+
+        for(int i = 0; i < getInserted(); ++i){
+            if(h.history[i] != history[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    @Override
     public void reset() {
         super.reset();
     }

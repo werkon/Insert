@@ -1,6 +1,8 @@
 package de.esnecca.multi;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
@@ -25,6 +27,10 @@ public class GameTest {
     public void testCopyConstructor() {
         game.insert(0);
         Game g = new Game(game);
+
+        assertTrue(game.equals(g));
+        assertTrue(g.equals(game));
+
         g.insert(0);
 
         assertEquals(1, game.getInserted());
@@ -48,6 +54,26 @@ public class GameTest {
         assertEquals(g.getSize(), game.getSize());
         assertEquals(g.getWidth(), game.getWidth());
         assertEquals(g.getColors(), game.getColors());
+
+    }
+
+    @Test
+    public void testEquals() {
+        game.insert(0);
+        Game g = new Game(game);
+
+        assertTrue(game.equals(g));
+        assertTrue(g.equals(game));
+
+        game.remove(0);
+
+        assertFalse(game.equals(g));
+        assertFalse(g.equals(game));
+
+        g.remove(0);
+
+        assertTrue(game.equals(g));
+        assertTrue(g.equals(game));
     }
 
     @Test
