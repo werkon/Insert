@@ -720,15 +720,74 @@ public class GameTest {
                     } else {
                         game.insert(x);
                     }
+                    BigInteger bi = game.getBigInteger();
+                    Game g = new Game(width, height, colors, wins);
+                    g.fromBigInteger(bi);
+    
+                    assertTrue(g.equals(game));
+                    assertTrue(game.equals(g));
                 }
-                BigInteger bi = game.getBigInteger();
-                Game g = new Game(width, height, colors, wins);
-                g.fromBigInteger(bi);
-
-                assertTrue(g.equals(game));
-                assertTrue(game.equals(g));
             }
         }
     }
 
+    @Test
+    public void testGetBigIntegerRevert() {
+        game.insert(0);
+
+        BigInteger bi0 = game.getBigInteger();
+        BigInteger bi1 = game.getBigIntegerRevert();
+
+        System.out.println(bi0.toString(10));
+        System.out.println(bi1.toString(10));
+
+        assertFalse(bi0.equals(bi1));
+
+        Game g2 = new Game(width, height, colors, wins);
+        g2.fromBigInteger(bi1);
+
+        BigInteger bi2 = g2.getBigIntegerRevert();
+
+        assertTrue(bi0.equals(bi2));
+
+        Game g3 = new Game(width, height, colors, wins);
+        g3.fromBigInteger(bi2);
+
+        assertTrue(game.equals(g3));
+
+        Random rn = new Random();
+        for (int i = 0; i < 1000; ++i) {
+            game.reset();
+            boolean stop = false;
+            while (!stop) {
+                if (game.isFull()) {
+                    stop = true;
+                }
+                int x = rn.nextInt(width);
+                if (!game.isFull(x)) {
+                    if (game.test(x)) {
+                        game.insert(x);
+                        stop = true;
+                    } else {
+                        game.insert(x);
+                    }
+
+                    bi0 = game.getBigInteger();
+                    bi1 = game.getBigIntegerRevert();
+
+                    g2 = new Game(width, height, colors, wins);
+                    g2.fromBigInteger(bi1);
+
+                    bi2 = g2.getBigIntegerRevert();
+
+                    assertTrue(bi0.equals(bi2));
+
+                    g3 = new Game(width, height, colors, wins);
+                    g3.fromBigInteger(bi2);
+            
+                    assertTrue(game.equals(g3));
+                }
+            }
+        }
+    }
 }

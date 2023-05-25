@@ -318,6 +318,24 @@ public class Game extends Field {
         System.out.println("");
     }
 
+    public BigInteger getBigIntegerRevert() {
+        BigInteger i = BigInteger.valueOf(0);
+
+        BigInteger m = BigInteger.valueOf(getColors());
+        for (int x = getWidth() - 1; x >= 0; --x) {
+            for (int y = 0; y < getInserted(x); ++y) {
+                i = i.multiply(m);
+                i = i.add(BigInteger.valueOf(get(x, y) - 1));
+            }
+        }
+        m = BigInteger.valueOf(getHeight() + 1);
+        for (int x = getWidth() - 1; x >= 0; --x) {
+            i = i.multiply(m);
+            i = i.add(BigInteger.valueOf(getInserted(x)));
+        }
+        return i;
+    }
+
     public BigInteger getBigInteger() {
         BigInteger i = BigInteger.valueOf(0);
 
