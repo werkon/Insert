@@ -97,7 +97,6 @@ public class HistoryTest {
         assertEquals(history.getSize(), history.getInserted());
 
         while (history.getInserted() > 0) {
-            history.print();
             history.remove();
         }
 

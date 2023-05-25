@@ -325,17 +325,13 @@ public class Game extends Field {
         for (int x = 0; x < getWidth(); ++x) {
             for (int y = 0; y < getInserted(x); ++y) {
                 i = i.multiply(m);
-                System.out.println("m: " + m);
                 i = i.add(BigInteger.valueOf(get(x, y) - 1));
-                System.out.println("i: " + i);
             }
         }
         m = BigInteger.valueOf(getHeight() + 1);
         for (int x = 0; x < getWidth(); ++x) {
             i = i.multiply(m);
-            System.out.println("-m: " + m);
             i = i.add(BigInteger.valueOf(getInserted(x)));
-            System.out.println("-i: " + i);
         }
         return i;
     }
@@ -360,5 +356,6 @@ public class Game extends Field {
                 bi = dr[0];
             }
         }
+        currentColor = inserted % colors + 1;
     }
 }

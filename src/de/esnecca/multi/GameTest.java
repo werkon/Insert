@@ -286,7 +286,6 @@ public class GameTest {
             assertEquals(false, game.test());
             game.insert(3);
             assertEquals(true, game.test());
-            game.print();
             game.reset();
 
             assertEquals(false, game.test(width - 1));
@@ -305,7 +304,6 @@ public class GameTest {
             assertEquals(false, game.test());
             game.insert(width - 4);
             assertEquals(true, game.test());
-            game.print();
             game.reset();
 
             // Vertikal
@@ -326,7 +324,6 @@ public class GameTest {
             assertEquals(false, game.test());
             game.insert(0);
             assertEquals(true, game.test());
-            game.print();
             game.reset();
 
             assertEquals(false, game.test(0));
@@ -350,7 +347,6 @@ public class GameTest {
             game.insert(0);
             assertEquals(6, game.getInserted(0));
             assertEquals(true, game.test());
-            game.print();
             game.reset();
 
             // Diagonal /
@@ -380,7 +376,6 @@ public class GameTest {
             game.insert(3);
             assertEquals(4, game.getInserted(3));
             assertEquals(true, game.test());
-            game.print();
             game.reset();
 
             assertEquals(false, game.test(width - 4));
@@ -425,7 +420,6 @@ public class GameTest {
             game.insert(width - 1);
             assertEquals(6, game.getInserted(width - 1));
             assertEquals(true, game.test());
-            game.print();
             game.reset();
 
             assertEquals(false, game.test(width - 5));
@@ -473,7 +467,6 @@ public class GameTest {
             assertEquals(6, game.getInserted(width - 1));
             assertEquals(true, game.test());
 
-            game.print();
             game.reset();
 
             // Diagonal \
@@ -504,7 +497,6 @@ public class GameTest {
             assertEquals(4, game.getInserted(0));
             assertEquals(true, game.test());
 
-            game.print();
             game.reset();
 
             assertEquals(false, game.test(width - 1));
@@ -549,7 +541,6 @@ public class GameTest {
             assertEquals(6, game.getInserted(width - 4));
             assertEquals(true, game.test());
 
-            game.print();
             game.reset();
 
             assertEquals(false, game.test(width - 5));
@@ -597,7 +588,6 @@ public class GameTest {
             assertEquals(6, game.getInserted(width - 4));
             assertEquals(true, game.test());
 
-            game.print();
             game.reset();
 
         }
@@ -621,7 +611,6 @@ public class GameTest {
                             game.set(x + t, s, 2);
                         }
                     }
-                    game.print();
                     assertEquals(true, game.test(x + w));
                 }
             }
@@ -639,7 +628,6 @@ public class GameTest {
                     game.set(x, t, 2);
                 }
                 game.setInserted(x, y + wins - 1);
-                game.print();
                 assertEquals(true, game.test(x));
             }
         }
@@ -661,7 +649,6 @@ public class GameTest {
                             game.set(x + t, s, 2);
                         }
                     }
-                    game.print();
                     assertEquals(true, game.test(x + w));
                 }
             }
@@ -684,7 +671,6 @@ public class GameTest {
                             game.set(x + t, s, 2);
                         }
                     }
-                    game.print();
                     assertEquals(true, game.test(x + w));
                 }
             }
@@ -692,7 +678,6 @@ public class GameTest {
 
         Random rn = new Random();
         for (int i = 0; i < 1000; ++i) {
-            System.out.println(i);
             game.reset();
             boolean stop = false;
             while (!stop) {
@@ -705,7 +690,6 @@ public class GameTest {
                         assertEquals(false, game.test());
                         game.insert(x);
                         assertEquals(true, game.test());
-                        game.print();
                         stop = true;
                     } else {
                         assertEquals(false, game.test());
@@ -722,7 +706,6 @@ public class GameTest {
 
         Random rn = new Random();
         for (int i = 0; i < 1000; ++i) {
-            System.out.println(i);
             game.reset();
             boolean stop = false;
             while (!stop) {
