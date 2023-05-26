@@ -2,36 +2,21 @@ package de.esnecca.multi;
 
 import java.math.BigInteger;
 
+import de.esnecca.multi.tools.Prime;
+
 public class HashThink implements Runnable{
     
     private Game game;
     private int x;
     private HashEntry[] hashEntries;
-    private int prime;
-    private BigInteger bigPrime;
-
-    private int prime(int i){
-        for( ; i > 0; --i ){
-            int j;
-            for( j = 2; j < i; ++j){
-                if( i % j == 0 ){
-                    break;
-                }
-            }
-            if( j >= i ){
-                return i;
-            }
-        }
-        return 0;
-    }
+    private Prime prime;
 
     public HashThink( Game game, int x ){
         this.game = new Game(game);
         this.x = x;
-        this.prime = prime(1000 * 1000 * 250);
-        this.bigPrime = BigInteger.valueOf(prime);
 
-        hashEntries = new HashEntry[prime];
+        prime = new Prime(1000*1000);
+        hashEntries = new HashEntry[prime.getPrime()];
     }
 
     // Positiver Wert:
@@ -63,9 +48,9 @@ public class HashThink implements Runnable{
 
         BigInteger bi = null;
         int index = 0;
-        if( game.getInserted() < game.getSize() / 2 ){
+        if( game.getInserted() < game.getSize() - 4  ){
             bi = game.getSmallestBigInteger();
-            index = bi.mod(bigPrime).intValue();
+            index = bi.mod(prime.getBigPrime()).intValue();
             HashEntry hashEntry = hashEntries[index];
             if( hashEntry != null && hashEntry.getValue().equals(bi) ){
                 game.remove(x);
