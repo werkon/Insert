@@ -8,9 +8,9 @@ public class ThreadExs {
 
     public static void main(String[] args) throws Exception {
 
-        History history = new History(7, 6, 2, 4);
+        History history = new History(5, 5, 2, 4);
         Scanner keyboard = new Scanner(System.in);
-        HashTable hashTable = new HashTable(1000 * 1000 * 50);
+        HashTable hashTable = new HashTable(1000 * 1000 * 250);
 
         while (true) {
             history.print();
@@ -21,7 +21,7 @@ public class ThreadExs {
                     history.insert(x);
                     for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                         if (!history.isFull(x2)) {
-                            HashThinkEx simpleThink = new HashThinkEx(history, x2, hashTable);
+                            HashThinkEx simpleThink = new HashThinkEx(history, x2, hashTable, false);
                             Thread thread = new Thread(simpleThink);
                             threads[x * history.getWidth() + x2] = thread;
                             thread.start();
@@ -41,6 +41,29 @@ public class ThreadExs {
                 }
                 Thread.sleep(1000);
                 System.out.println(hashTable.filled());
+                Runtime gfg = Runtime.getRuntime();
+                System.out.println("TM: " + gfg.totalMemory());
+                System.out.println("FM: " + gfg.freeMemory());
+            }
+
+            for (int x = 0; x < history.getWidth(); ++x) {
+                if (!history.isFull(x)) {
+                    HashThinkEx simpleThink = new HashThinkEx(history, x, hashTable, true);
+                    Thread thread = new Thread(simpleThink);
+                    threads[x * history.getWidth() + x] = thread;
+                    thread.start();
+                }
+            }
+
+            stop = false;
+            while (!stop) {
+                stop = true;
+                for (int x = 0; x < history.getWidth(); ++x) {
+                    if (threads[x] != null && threads[x].isAlive()) {
+                        stop = false;
+                    }
+                }
+                Thread.sleep(1000);
             }
 
             String input = keyboard.nextLine();

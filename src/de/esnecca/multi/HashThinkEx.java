@@ -4,18 +4,19 @@ import java.math.BigInteger;
 
 import de.esnecca.multi.hash.HashEntry;
 import de.esnecca.multi.hash.HashTable;
-import de.esnecca.multi.tools.Prime;
 
 public class HashThinkEx implements Runnable {
 
     private Game game;
     private int x;
     private HashTable hashTable;
+    private boolean show;
 
-    public HashThinkEx(Game game, int x, HashTable hashTable) {
+    public HashThinkEx(Game game, int x, HashTable hashTable, boolean show) {
         this.game = new Game(game);
         this.x = x;
         this.hashTable = hashTable;
+        this.show = show;
     }
 
     public int think(int x) {
@@ -29,7 +30,6 @@ public class HashThinkEx implements Runnable {
         game.insert(x);
 
         BigInteger bi = null;
-        int index = 0;
         if (game.getInserted() < game.getSize() - 4) {
             bi = game.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
@@ -92,7 +92,9 @@ public class HashThinkEx implements Runnable {
     @Override
     public void run() {
         int ret = think(x);
-        System.out.println("x: " + (x + 1) + " r: " + ret);
+        if( show ){
+            System.out.println("x: " + (x + 1) + " r: " + ret);
+        }
     }
 
 }

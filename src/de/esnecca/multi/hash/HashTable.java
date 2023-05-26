@@ -12,6 +12,18 @@ public class HashTable {
     public HashTable(int size) {
         this.size = new Prime(size);
         hashEntries = new HashEntry[this.size.getPrime()];
+        // for (int i = 0; i < this.size.getPrime(); ++i) {
+        //     BigInteger bi = BigInteger.valueOf(i);
+        //     hashEntries[i] = new HashEntry(bi, i);
+        // }
+        Runtime gfg = Runtime.getRuntime();
+        // System.out.println("TM: " + gfg.totalMemory());
+        // System.out.println("FM: " + gfg.freeMemory());
+        reset();
+        gfg.gc();
+        System.out.println("TM: " + gfg.totalMemory());
+        System.out.println("FM: " + gfg.freeMemory());
+        System.out.println("*******************************************" );
     }
 
     public synchronized void reset() {
