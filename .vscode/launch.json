@@ -28,6 +28,13 @@
             "request": "launch",
             "mainClass": "Threads",
             "vmArgs": "-Xmx12g -Xms12g"
+        },
+        {
+            "type": "java",
+            "name": "ThreadExs",
+            "request": "launch",
+            "mainClass": "ThreadExs",
+            "vmArgs": "-Xmx12g -Xms12g"
         }
 
     ]

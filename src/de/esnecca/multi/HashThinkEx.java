@@ -3,45 +3,26 @@ package de.esnecca.multi;
 import java.math.BigInteger;
 
 import de.esnecca.multi.hash.HashEntry;
+import de.esnecca.multi.hash.HashTable;
 import de.esnecca.multi.tools.Prime;
 
-public class HashThink implements Runnable {
+public class HashThinkEx implements Runnable {
 
     private Game game;
     private int x;
-    private HashEntry[] hashEntries;
-    private Prime prime;
+    private HashTable hashTable;
 
-    public HashThink(Game game, int x) {
+    public HashThinkEx(Game game, int x, HashTable hashTable) {
         this.game = new Game(game);
         this.x = x;
-
-        prime = new Prime(1000 * 1000);
-        hashEntries = new HashEntry[prime.getPrime()];
+        this.hashTable = hashTable;
     }
-
-    // Positiver Wert:
-    // Ich gewinne in spätestens x Zügen
-
-    // Negativer Wert:
-    // Ich verliere in spätestens x Zügen
-
-    // 0:
-    // Unentscheiden.
 
     public int think(int x) {
         if (game.test(x)) {
-            // System.out.println("x: " + x + " c: " + game.getCurrentColor());
-            // game.print();
-            // System.out.println("e: " + 1);
-            // System.out.println("********************************************");
             return 1;
         }
         if (game.getInserted() >= game.getSize() - 1) {
-            // System.out.println("x: " + x + " c: " + game.getCurrentColor());
-            // game.print();
-            // System.out.println("e: " + 0);
-            // System.out.println("********************************************");
             return 0;
         }
 
@@ -51,8 +32,7 @@ public class HashThink implements Runnable {
         int index = 0;
         if (game.getInserted() < game.getSize() - 4) {
             bi = game.getSmallestBigInteger();
-            index = bi.mod(prime.getBigPrime()).intValue();
-            HashEntry hashEntry = hashEntries[index];
+            HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {
                 game.remove(x);
                 return hashEntry.getResult();
@@ -85,41 +65,26 @@ public class HashThink implements Runnable {
 
         if (kleinstesPositivesR > 0) {
 
-            // System.out.println("x: " + x + " c: " + game.getCurrentColor());
-            // game.print();
-            // System.out.println("e: " + ( ( kleinstesPositivesR + 1 ) * (-1) ));
-            // System.out.println("********************************************");
-
             int ret = (kleinstesPositivesR + 1) * (-1);
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
-                hashEntries[index] = hashEntry;
+                hashTable.set(hashEntry);
             }
             return ret;
         }
         if (unentschieden) {
-            // System.out.println("x: " + x + " c: " + game.getCurrentColor());
-            // game.print();
-            // System.out.println("e: " + 0);
-            // System.out.println("********************************************");
-
             int ret = 0;
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
-                hashEntries[index] = hashEntry;
+                hashTable.set(hashEntry);
             }
             return ret;
         }
 
-        // System.out.println("x: " + x + " c: " + game.getCurrentColor());
-        // game.print();
-        // System.out.println("e: " + ((groesstesNegativesR * (-1)) + 1));
-        // System.out.println("********************************************");
-
         int ret = (groesstesNegativesR * (-1)) + 1;
         if (bi != null) {
             HashEntry hashEntry = new HashEntry(bi, ret);
-            hashEntries[index] = hashEntry;
+            hashTable.set(hashEntry);
         }
         return ret;
     }

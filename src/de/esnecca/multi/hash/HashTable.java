@@ -28,4 +28,16 @@ public class HashTable {
         hashEntries[hashEntry.getValue().mod(size.getBigPrime()).intValue()] = hashEntry;
     }
 
+
+    public synchronized int filled() {
+        int c = 0;
+        for( int i = 0; i < size.getPrime(); ++i){
+            if( hashEntries[i] != null ){
+                ++c;
+            }
+        }
+        return (int)(((long)c) * 100 / size.getPrime());
+
+    }
+
 }
