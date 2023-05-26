@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import de.esnecca.multi.HashEntry;
 import de.esnecca.multi.History;
-import de.esnecca.multi.SimpleThink;
+import de.esnecca.multi.HashThink;
 
 public class Simple {
     public static void main(String[] args) throws Exception {
@@ -19,7 +19,7 @@ public class Simple {
             history.print();
             System.out.println(hashEntries[5]);
 
-            SimpleThink simpleThink = new SimpleThink(history,0);
+            HashThink simpleThink = new HashThink(history,0);
 
             // if( !history.isFull(0)){
             //     System.out.println( "1:" + simpleThink.think(0) );

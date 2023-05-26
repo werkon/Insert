@@ -26,7 +26,8 @@
             "type": "java",
             "name": "Threads",
             "request": "launch",
-            "mainClass": "Threads"
+            "mainClass": "Threads",
+            "vmArgs": "-Xmx12g -Xms12g"
         }
 
     ]

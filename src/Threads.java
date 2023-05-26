@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 import de.esnecca.multi.History;
-import de.esnecca.multi.SimpleThink;
+import de.esnecca.multi.HashThink;
 
 public class Threads {
     
@@ -16,7 +16,7 @@ public class Threads {
             Thread[] threads = new Thread[history.getWidth()];
             for( int x = 0; x < history.getWidth(); ++x){
                 if(!history.isFull(x)){
-                    SimpleThink simpleThink = new SimpleThink(history, x);
+                    HashThink simpleThink = new HashThink(history, x);
                     Thread thread = new Thread(simpleThink);
                     threads[x] = thread;
                     thread.start();
