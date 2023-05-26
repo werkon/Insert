@@ -2,6 +2,7 @@ package de.esnecca.multi;
 
 import java.math.BigInteger;
 
+import de.esnecca.multi.hash.HashEntry;
 import de.esnecca.multi.tools.Prime;
 
 public class HashThink implements Runnable{

@@ -7,7 +7,7 @@ public class Threads {
     
     public static void main(String[] args) throws Exception {
 
-        History history = new History(5, 4, 2, 4);
+        History history = new History(5, 5, 2, 4);
         Scanner keyboard = new Scanner(System.in);
 
         while (true) {

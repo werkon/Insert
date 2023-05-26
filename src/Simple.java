@@ -2,8 +2,8 @@
 import java.math.BigInteger;
 import java.util.Scanner;
 
-import de.esnecca.multi.HashEntry;
 import de.esnecca.multi.History;
+import de.esnecca.multi.hash.HashEntry;
 import de.esnecca.multi.HashThink;
 
 public class Simple {
