@@ -15,44 +15,47 @@ import de.esnecca.multi.Game;
 public class DbTest {
 
     private Db db;
+    private DbConnection dbConnection;
 
     @Before
-    public void init() {
+    public void init() throws SQLException {
         db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
+        dbConnection = new DbConnection(db);
     }
 
     @Test
     public void testGetGameId() throws SQLException {
         Game game = new Game(7, 6, 2, 4);
-        assertEquals(1, db.getGameId(game));
+        assertEquals(1, dbConnection.getGameId(game));
         Game game2 = new Game(1, 1, 1, 1);
-        assertEquals(0, db.getGameId(game2));
+        dbConnection.deleteGame(game2);
+        assertEquals(0, dbConnection.getGameId(game2));
 
     }
 
     @Test
     public void testCreateGame() throws SQLException {
-        Game game = new Game(1, 1, 1, 1);
-        assertTrue(db.deleteGame(game));
-        assertTrue(db.createGame(game));
-        assertTrue(db.getGameId(game) > 0);
-        assertTrue(db.deleteGame(game));
+        Game game = new Game(1, 1, 1, 2);
+        assertTrue(dbConnection.deleteGame(game));
+        assertTrue(dbConnection.createGame(game));
+        assertTrue(dbConnection.getGameId(game) > 0);
+        assertTrue(dbConnection.deleteGame(game));
     }
 
     @Test
     public void testDeleteGame() throws SQLException {
-        Game game = new Game(1, 1, 1, 1);
-        assertTrue(db.deleteGame(game));
-        assertTrue(db.createGame(game));
-        assertTrue(db.getGameId(game) > 0);
-        assertTrue(db.deleteGame(game));
-        assertFalse(db.getGameId(game) > 0);
+        Game game = new Game(1, 1, 1, 3);
+        assertTrue(dbConnection.deleteGame(game));
+        assertTrue(dbConnection.createGame(game));
+        assertTrue(dbConnection.getGameId(game) > 0);
+        assertTrue(dbConnection.deleteGame(game));
+        assertFalse(dbConnection.getGameId(game) > 0);
     }
 
     @Test
     public void testCreateGetDeleteEntry() throws SQLException {
 
-        Game game = new Game(1, 1, 2, 1);
+        Game game = new Game(1, 1, 1, 4);
         BigInteger bi = BigInteger.valueOf(558899);
         bi = bi.multiply(bi);
         bi = bi.multiply(bi);
@@ -60,29 +63,32 @@ public class DbTest {
         bi = bi.multiply(bi);
         bi = bi.multiply(bi);
 
-        int gameid = db.getGameId(game);
+        int gameid = dbConnection.getGameId(game);
         if (gameid > 0) {
-            assertTrue(db.deleteEntry(bi, gameid));
+            assertTrue(dbConnection.deleteEntry(bi, gameid));
         }
-        assertTrue(db.deleteGame(game));
-        assertTrue(db.createGame(game));
+        assertTrue(dbConnection.deleteGame(game));
+        assertTrue(dbConnection.deleteGame(game));
+        assertTrue(dbConnection.deleteGame(game));
+        assertTrue(dbConnection.deleteGame(game));
+        assertTrue(dbConnection.createGame(game));
 
-        gameid = db.getGameId(game);
+        gameid = dbConnection.getGameId(game);
 
         DbEntry dbEntry = new DbEntry(bi, gameid, 1, 2);
 
-        assertTrue(db.createEntry(dbEntry));
-        assertFalse(db.createEntry(dbEntry));
-        assertFalse(db.createEntry(dbEntry));
+        assertTrue(dbConnection.createEntry(dbEntry));
+        assertFalse(dbConnection.createEntry(dbEntry));
+        assertFalse(dbConnection.createEntry(dbEntry));
 
-        DbEntry dbEntry2 = db.getDbEntry(bi, gameid);
+        DbEntry dbEntry2 = dbConnection.getDbEntry(bi, gameid);
         assertEquals(dbEntry, dbEntry2);
 
-        assertTrue(db.deleteEntry(bi, gameid));
-        assertNull(db.getDbEntry(bi, gameid));
-        assertTrue(db.deleteEntry(bi, gameid));
+        assertTrue(dbConnection.deleteEntry(bi, gameid));
+        assertNull(dbConnection.getDbEntry(bi, gameid));
+        assertTrue(dbConnection.deleteEntry(bi, gameid));
 
-        assertTrue(db.deleteGame(game));
+        assertTrue(dbConnection.deleteGame(game));
     }
 
 }
