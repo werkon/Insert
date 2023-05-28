@@ -11,7 +11,7 @@ public class Database {
 
     public static void main(String[] args) throws Exception {
 
-        History history = new History(5, 5, 2, 4);
+        History history = new History(7, 6, 2, 4);
         Scanner keyboard = new Scanner(System.in);
         HashTable hashTable = new HashTable(1000 * 1000 * 50);
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
