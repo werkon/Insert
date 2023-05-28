@@ -30,7 +30,7 @@ public class HashThinkEx implements Runnable {
         game.insert(x);
 
         BigInteger bi = null;
-        if (game.getInserted() < game.getSize() - 4) {
+        if (game.getInserted() < game.getSize() - 8) {
             bi = game.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {

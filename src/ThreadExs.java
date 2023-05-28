@@ -10,7 +10,7 @@ public class ThreadExs {
 
         History history = new History(5, 5, 2, 4);
         Scanner keyboard = new Scanner(System.in);
-        HashTable hashTable = new HashTable(1000 * 1000 * 250);
+        HashTable hashTable = new HashTable(1000 * 1000 * 50);
 
         while (true) {
             history.print();

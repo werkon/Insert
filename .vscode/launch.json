@@ -34,7 +34,7 @@
             "name": "ThreadExs",
             "request": "launch",
             "mainClass": "ThreadExs",
-            "vmArgs": "-Xmx32g -Xms32g"
+            "vmArgs": "-Xmx48g -Xms12g"
         }
 
     ]
