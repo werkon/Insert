@@ -10,3 +10,6 @@ group by 1 ORDER BY inserted asc
 
 SELECT * FROM public.entries where gameid=1
 ORDER BY inserted asc limit 10000
+
+SELECT result, count(*) FROM public.entries where gameid=1
+group by 1 order by 1
