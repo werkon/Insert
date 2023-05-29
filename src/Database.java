@@ -18,19 +18,19 @@ public class Database {
         dbConnection.createGame(history);
         dbConnection.close();
 
+        long owritten = 0;
         while (true) {
             history.print();
 
-            Thread[] threads = new Thread[history.getWidth() * history.getWidth()];
+            DbThink[] threads = new DbThink[history.getWidth() * history.getWidth()];
             for (int x = 0; x < history.getWidth(); ++x) {
                 if (!history.isFull(x)) {
                     history.insert(x);
                     for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                         if (!history.isFull(x2)) {
                             DbThink simpleThink = new DbThink(history, x2, hashTable, new DbConnection(db), false);
-                            Thread thread = new Thread(simpleThink);
-                            threads[x * history.getWidth() + x2] = thread;
-                            thread.start();
+                            threads[x * history.getWidth() + x2] = simpleThink;
+                            simpleThink.start();
                         }
                     }
                     history.remove();
@@ -40,13 +40,18 @@ public class Database {
             boolean stop = false;
             while (!stop) {
                 stop = true;
+                long written = 0;
                 for (int x = 0; x < history.getWidth() * history.getWidth(); ++x) {
-                    if (threads[x] != null && threads[x].isAlive()) {
-                        threads[x].
-                        stop = false;
+                    if (threads[x] != null ){
+                        written += threads[x].getWritten();
+                        if( threads[x].isAlive()) {
+                            stop = false;
+                        }
                     }
                 }
-                Thread.sleep(1000);
+                System.out.println("Written: " + (written - owritten) + " Cache: " + hashTable.filled() + "%");
+                owritten = written;
+                Thread.sleep(1000 * 60);
             //    System.out.println(hashTable.filled());
             //     Runtime gfg = Runtime.getRuntime();
             //     System.out.println("TM: " + gfg.totalMemory());
@@ -56,9 +61,8 @@ public class Database {
             for (int x = 0; x < history.getWidth(); ++x) {
                 if (!history.isFull(x)) {
                     DbThink simpleThink = new DbThink(history, x, hashTable, new DbConnection(db), true);
-                    Thread thread = new Thread(simpleThink);
-                    threads[x * history.getWidth() + x] = thread;
-                    thread.start();
+                    threads[x * history.getWidth() + x] = simpleThink;
+                    simpleThink.start();
                 }
             }
 

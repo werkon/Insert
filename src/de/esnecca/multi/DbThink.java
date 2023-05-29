@@ -8,7 +8,7 @@ import de.esnecca.multi.db.DbEntry;
 import de.esnecca.multi.hash.HashEntry;
 import de.esnecca.multi.hash.HashTable;
 
-public class DbThink implements Runnable {
+public class DbThink extends Thread {
 
     private Game game;
     private int x;
@@ -21,6 +21,8 @@ public class DbThink implements Runnable {
     private int dbLimit;
     private int printLimit;
 
+    private long written;
+
     public DbThink(Game game, int x, HashTable hashTable, DbConnection dbConnection, boolean show) throws SQLException {
         this.game = new Game(game);
         this.x = x;
@@ -28,9 +30,10 @@ public class DbThink implements Runnable {
         this.dbConnection = dbConnection;
         this.show = show;
         gameid = dbConnection.getGameId(game);
-        hashLimit = game.getSize() - 10;
+        hashLimit = game.getSize() - 9;
         dbLimit = 24; // game.getSize() / 2;
-        printLimit = 18; // game.getSize() / 2;
+        printLimit = 16; // game.getSize() / 2;
+        written = 0;
     }
 
     public int think(int x) throws SQLException {
@@ -97,6 +100,7 @@ public class DbThink implements Runnable {
                 if (game.getInserted() < dbLimit) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     dbConnection.createEntry(dbEntry);
+                    ++written;
                 }
             }
             return ret;
@@ -109,6 +113,7 @@ public class DbThink implements Runnable {
                 if (game.getInserted() < dbLimit) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     dbConnection.createEntry(dbEntry);
+                    ++written;
                 }
             }
             return ret;
@@ -121,9 +126,14 @@ public class DbThink implements Runnable {
             if (game.getInserted() < dbLimit) {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                 dbConnection.createEntry(dbEntry);
+                ++written;
             }
         }
         return ret;
+    }
+
+    public long getWritten() {
+        return written;
     }
 
     @Override
