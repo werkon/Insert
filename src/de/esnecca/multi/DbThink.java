@@ -60,10 +60,6 @@ public class DbThink extends Thread {
                     game.remove(x);
                     return dbEntry.getResult();
                 }
-                if (game.getInserted() < printLimit) {
-                    print(game);
-                }
-
             }
         }
 
@@ -101,6 +97,12 @@ public class DbThink extends Thread {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     dbConnection.createEntry(dbEntry);
                     ++written;
+                    if (game.getInserted() < printLimit) {
+                        Game game2 = new Game(game);
+                        game2.insert(x);
+                        print(game2);
+                        System.out.println("Ret: " + ret);
+                    }
                 }
             }
             return ret;
@@ -114,6 +116,12 @@ public class DbThink extends Thread {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     dbConnection.createEntry(dbEntry);
                     ++written;
+                    if (game.getInserted() < printLimit) {
+                        Game game2 = new Game(game);
+                        game2.insert(x);
+                        print(game2);
+                        System.out.println("Ret: " + ret);
+                    }
                 }
             }
             return ret;
@@ -127,7 +135,13 @@ public class DbThink extends Thread {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                 dbConnection.createEntry(dbEntry);
                 ++written;
-            }
+                if (game.getInserted() < printLimit) {
+                    Game game2 = new Game(game);
+                    game2.insert(x);
+                    print(game2);
+                    System.out.println("Ret: " + ret);
+                }
+        }
         }
         return ret;
     }
