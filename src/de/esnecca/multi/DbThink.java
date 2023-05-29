@@ -19,6 +19,7 @@ public class DbThink implements Runnable {
 
     private int hashLimit;
     private int dbLimit;
+    private int printLimit;
 
     public DbThink(Game game, int x, HashTable hashTable, DbConnection dbConnection, boolean show) throws SQLException {
         this.game = new Game(game);
@@ -29,6 +30,7 @@ public class DbThink implements Runnable {
         gameid = dbConnection.getGameId(game);
         hashLimit = game.getSize() - 10;
         dbLimit = 24; // game.getSize() / 2;
+        printLimit = 18; // game.getSize() / 2;
     }
 
     public int think(int x) throws SQLException {
@@ -55,6 +57,10 @@ public class DbThink implements Runnable {
                     game.remove(x);
                     return dbEntry.getResult();
                 }
+                if (game.getInserted() < printLimit) {
+                    print(game);
+                }
+
             }
         }
 
@@ -133,4 +139,7 @@ public class DbThink implements Runnable {
         }
     }
 
+    synchronized public void print(Game game){
+        game.print();
+    }
 }

@@ -5,7 +5,6 @@ import de.esnecca.multi.db.Db;
 import de.esnecca.multi.db.DbConnection;
 import de.esnecca.multi.hash.HashTable;
 import de.esnecca.multi.DbThink;
-import de.esnecca.multi.HashThinkEx;
 
 public class Database {
 
@@ -43,14 +42,15 @@ public class Database {
                 stop = true;
                 for (int x = 0; x < history.getWidth() * history.getWidth(); ++x) {
                     if (threads[x] != null && threads[x].isAlive()) {
+                        threads[x].
                         stop = false;
                     }
                 }
                 Thread.sleep(1000);
-                System.out.println(hashTable.filled());
-                Runtime gfg = Runtime.getRuntime();
-                System.out.println("TM: " + gfg.totalMemory());
-                System.out.println("FM: " + gfg.freeMemory());
+            //    System.out.println(hashTable.filled());
+            //     Runtime gfg = Runtime.getRuntime();
+            //     System.out.println("TM: " + gfg.totalMemory());
+            //     System.out.println("FM: " + gfg.freeMemory());
             }
 
             for (int x = 0; x < history.getWidth(); ++x) {

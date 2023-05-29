@@ -1,13 +1,8 @@
 package de.esnecca.multi.db;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import de.esnecca.multi.Game;
 
 public class Db {
 
