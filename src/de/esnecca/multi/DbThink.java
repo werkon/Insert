@@ -100,8 +100,7 @@ public class DbThink extends Thread {
                     if (game.getInserted() < printLimit) {
                         Game game2 = new Game(game);
                         game2.insert(x);
-                        print(game2);
-                        System.out.println("Ret: " + ret);
+                        print(game2, ret);
                     }
                 }
             }
@@ -119,8 +118,7 @@ public class DbThink extends Thread {
                     if (game.getInserted() < printLimit) {
                         Game game2 = new Game(game);
                         game2.insert(x);
-                        print(game2);
-                        System.out.println("Ret: " + ret);
+                        print(game2, ret);
                     }
                 }
             }
@@ -138,8 +136,7 @@ public class DbThink extends Thread {
                 if (game.getInserted() < printLimit) {
                     Game game2 = new Game(game);
                     game2.insert(x);
-                    print(game2);
-                    System.out.println("Ret: " + ret);
+                    print(game2, ret);
                 }
         }
         }
@@ -163,7 +160,10 @@ public class DbThink extends Thread {
         }
     }
 
-    synchronized public void print(Game game){
+    synchronized public void print(Game game, int ret){
         game.print();
+        System.out.println("   Result: " + ret);
+        System.out.println("");
+        System.out.flush();
     }
 }

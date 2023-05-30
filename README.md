@@ -13,3 +13,5 @@ ORDER BY inserted asc limit 10000
 
 SELECT result, count(*) FROM public.entries where gameid=1
 group by 1 order by 1
+
+C:\Install\jdk-19.0.2\bin\java.exe -jar D:\Java\Insert\Insert.jar -Xmx48g -Xms12g

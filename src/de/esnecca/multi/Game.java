@@ -314,8 +314,7 @@ public class Game extends Field {
         for (int x = 0; x < getWidth(); ++x) {
             System.out.print(" " + getInserted(x));
         }
-        System.out.println("");
-        System.out.println("");
+        System.out.println(" - " + getInserted());
     }
 
     public BigInteger getBigIntegerRevert() {
@@ -358,12 +357,11 @@ public class Game extends Field {
         BigInteger b1 = getBigInteger();
         BigInteger b2 = getBigIntegerRevert();
 
-        if( b1.compareTo(b2) < 0 ){
+        if (b1.compareTo(b2) < 0) {
             return b1;
-        }
-        else{
+        } else {
             return b2;
-        } 
+        }
     }
 
     public void fromBigInteger(BigInteger bi) {
