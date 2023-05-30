@@ -22,6 +22,8 @@ public class Database {
         dbConnection.close();
 
         long owritten = 0;
+        long ocollisions = 0;
+
         while (true) {
             history.print();
 
@@ -44,16 +46,19 @@ public class Database {
             while (!stop) {
                 stop = true;
                 long written = 0;
+                long collisions = 0;
                 for (int x = 0; x < history.getWidth() * history.getWidth(); ++x) {
                     if (threads[x] != null) {
                         written += threads[x].getWritten();
+                        collisions += threads[x].getCollisions();
                         if (threads[x].isAlive()) {
                             stop = false;
                         }
                     }
                 }
-                System.out.println("Written: " + (written - owritten) + " Cache: " + hashTable.filled() + "%");
+                System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions) + " Cache: " + hashTable.filled() + "%");
                 owritten = written;
+                ocollisions = collisions;
                 Thread.sleep(1000 * 60);
             }
 

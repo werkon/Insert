@@ -84,10 +84,16 @@ public class Field {
 
     public void print() {
         for (int y = height - 1; y >= 0; --y) {
-            System.out.print((y + 1) + " -");
+            System.out.format("%2d - ", (y + 1));
             for (int x = 0; x < width; ++x) {
-                System.out.print(" " + (get(x, y) == 0 ? " " : get(x, y)));
+                int v = get(x,y);
+                if( v > 0 ){
+                    System.out.format("%2d ", v);
+                }else{
+                    System.out.print("    ");
+                }
             }
+            System.out.println("");
             System.out.println("");
         }
     }

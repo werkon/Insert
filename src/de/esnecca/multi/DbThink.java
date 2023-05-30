@@ -19,6 +19,7 @@ public class DbThink extends Thread {
 
     private int gameid;
     private long written;
+    private long collisions;
 
     public DbThink(Game game, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits, boolean show) throws SQLException {
         this.game = new Game(game);
@@ -34,6 +35,7 @@ public class DbThink extends Thread {
         // dbLimit = 24; // game.getSize() / 2;
         // printLimit = 16; // game.getSize() / 2;
         written = 0;
+        collisions = 0;
     }
 
     public static class DbThinkLimits{
@@ -120,8 +122,11 @@ public class DbThink extends Thread {
                 hashTable.set(hashEntry);
                 if (game.getInserted() < limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
-                    dbConnection.createEntry(dbEntry);
-                    ++written;
+                    if(dbConnection.createEntry(dbEntry)){
+                        ++written;
+                    }else{
+                        ++collisions;
+                    }
                     if (game.getInserted() < limits.getPrintLimit()) {
                         Game game2 = new Game(game);
                         game2.insert(x);
@@ -138,8 +143,11 @@ public class DbThink extends Thread {
                 hashTable.set(hashEntry);
                 if (game.getInserted() < limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
-                    dbConnection.createEntry(dbEntry);
-                    ++written;
+                    if(dbConnection.createEntry(dbEntry)){
+                        ++written;
+                    }else{
+                        ++collisions;
+                    }
                     if (game.getInserted() < limits.getPrintLimit()) {
                         Game game2 = new Game(game);
                         game2.insert(x);
@@ -156,8 +164,11 @@ public class DbThink extends Thread {
             hashTable.set(hashEntry);
             if (game.getInserted() < limits.getDbLimit()) {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
-                dbConnection.createEntry(dbEntry);
-                ++written;
+                if(dbConnection.createEntry(dbEntry)){
+                    ++written;
+                }else{
+                    ++collisions;
+                }
                 if (game.getInserted() < limits.getPrintLimit()) {
                     Game game2 = new Game(game);
                     game2.insert(x);
@@ -170,6 +181,10 @@ public class DbThink extends Thread {
 
     public long getWritten() {
         return written;
+    }
+
+    public long getCollisions() {
+        return collisions;
     }
 
     @Override

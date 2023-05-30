@@ -296,23 +296,25 @@ public class Game extends Field {
     public void print() {
         System.out.print("   ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print(" " + (x + 1));
+            System.out.format("%2d ", (x + 1));
         }
         System.out.println("");
         System.out.print("   ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print(" |");
+            System.out.print("   |");
         }
         System.out.println("");
+        System.out.println("");
+        
         super.print();
         System.out.print("   ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print(" |");
+            System.out.print("   |");
         }
         System.out.println("");
         System.out.print("   ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print(" " + getInserted(x));
+            System.out.format("%2d ",getInserted(x));
         }
         System.out.println(" - " + getInserted());
     }
