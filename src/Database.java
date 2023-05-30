@@ -11,6 +11,7 @@ public class Database {
     public static void main(String[] args) throws Exception {
 
         History history = new History(7, 6, 2, 4);
+        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 9, 24, 16);
         Scanner keyboard = new Scanner(System.in);
         HashTable hashTable = new HashTable(1000 * 1000 * 50);
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
@@ -30,7 +31,7 @@ public class Database {
                     history.insert(x);
                     for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                         if (!history.isFull(x2)) {
-                            DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), false);
+                            DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits, false);
                             threads[x * history.getWidth() + x2] = dbThink;
                             dbThink.start();
                         }
@@ -54,14 +55,11 @@ public class Database {
                 System.out.println("Written: " + (written - owritten) + " Cache: " + hashTable.filled() + "%");
                 owritten = written;
                 Thread.sleep(1000 * 60);
-                // Runtime gfg = Runtime.getRuntime();
-                // System.out.println("TM: " + gfg.totalMemory());
-                // System.out.println("FM: " + gfg.freeMemory());
             }
 
             for (int x = 0; x < history.getWidth(); ++x) {
                 if (!history.isFull(x)) {
-                    DbThink dbThink = new DbThink(history, x, hashTable, new DbConnection(db), true);
+                    DbThink dbThink = new DbThink(history, x, hashTable, new DbConnection(db), dbThinkLimits, true);
                     threads[x * history.getWidth() + x] = dbThink;
                     dbThink.start();
                 }

@@ -14,26 +14,51 @@ public class DbThink extends Thread {
     private int x;
     private HashTable hashTable;
     private DbConnection dbConnection;
+    private DbThinkLimits limits;
     private boolean show;
+
     private int gameid;
-
-    private int hashLimit;
-    private int dbLimit;
-    private int printLimit;
-
     private long written;
 
-    public DbThink(Game game, int x, HashTable hashTable, DbConnection dbConnection, boolean show) throws SQLException {
+    public DbThink(Game game, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits, boolean show) throws SQLException {
         this.game = new Game(game);
         this.x = x;
         this.hashTable = hashTable;
         this.dbConnection = dbConnection;
+        this.limits = limits;
         this.show = show;
+
         gameid = dbConnection.getGameId(game);
-        hashLimit = game.getSize() - 9;
-        dbLimit = 24; // game.getSize() / 2;
-        printLimit = 16; // game.getSize() / 2;
+
+        // hashLimit = game.getSize() - 9;
+        // dbLimit = 24; // game.getSize() / 2;
+        // printLimit = 16; // game.getSize() / 2;
         written = 0;
+    }
+
+    public static class DbThinkLimits{
+
+        private int hashLimit;
+        private int dbLimit;
+        private int printLimit;
+
+        public DbThinkLimits(int hashLimit, int dbLimit, int printLimit) {
+            this.hashLimit = hashLimit;
+            this.dbLimit = dbLimit;
+            this.printLimit = printLimit;
+        }
+
+        public int getHashLimit() {
+            return hashLimit;
+        }
+
+        public int getDbLimit() {
+            return dbLimit;
+        }
+
+        public int getPrintLimit() {
+            return printLimit;
+        }
     }
 
     public int think(int x) throws SQLException {
@@ -47,14 +72,14 @@ public class DbThink extends Thread {
         game.insert(x);
 
         BigInteger bi = null;
-        if (game.getInserted() < hashLimit) {
+        if (game.getInserted() < limits.getHashLimit()) {
             bi = game.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {
                 game.remove(x);
                 return hashEntry.getResult();
             }
-            if (game.getInserted() < dbLimit) {
+            if (game.getInserted() < limits.getDbLimit()) {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry != null) {
                     game.remove(x);
@@ -93,11 +118,11 @@ public class DbThink extends Thread {
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
-                if (game.getInserted() < dbLimit) {
+                if (game.getInserted() < limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     dbConnection.createEntry(dbEntry);
                     ++written;
-                    if (game.getInserted() < printLimit) {
+                    if (game.getInserted() < limits.getPrintLimit()) {
                         Game game2 = new Game(game);
                         game2.insert(x);
                         print(game2, ret);
@@ -111,11 +136,11 @@ public class DbThink extends Thread {
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
-                if (game.getInserted() < dbLimit) {
+                if (game.getInserted() < limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     dbConnection.createEntry(dbEntry);
                     ++written;
-                    if (game.getInserted() < printLimit) {
+                    if (game.getInserted() < limits.getPrintLimit()) {
                         Game game2 = new Game(game);
                         game2.insert(x);
                         print(game2, ret);
@@ -129,11 +154,11 @@ public class DbThink extends Thread {
         if (bi != null) {
             HashEntry hashEntry = new HashEntry(bi, ret);
             hashTable.set(hashEntry);
-            if (game.getInserted() < dbLimit) {
+            if (game.getInserted() < limits.getDbLimit()) {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                 dbConnection.createEntry(dbEntry);
                 ++written;
-                if (game.getInserted() < printLimit) {
+                if (game.getInserted() < limits.getPrintLimit()) {
                     Game game2 = new Game(game);
                     game2.insert(x);
                     print(game2, ret);
@@ -153,7 +178,7 @@ public class DbThink extends Thread {
             int ret = think(x);
             dbConnection.close();
             if (show) {
-                System.out.println("x: " + (x + 1) + " r: " + ret);
+                System.out.println("x: " + (x + 1) + " result: " + ret);
             }
         } catch (SQLException sex) {
             System.out.println(sex);
@@ -162,7 +187,7 @@ public class DbThink extends Thread {
 
     synchronized public void print(Game game, int ret){
         game.print();
-        System.out.println("   Result: " + ret);
+        System.out.println("   result: " + ret);
         System.out.println("");
         System.out.flush();
     }
