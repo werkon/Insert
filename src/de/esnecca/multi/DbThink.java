@@ -83,6 +83,7 @@ public class DbThink extends Thread {
                 return hashEntry.getResult();
             }
             if (biInserted <= limits.getDbLimit()) { // 23 nun 24 / Limit: 24
+                System.out.format("READ biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry != null) {
                     game.remove(x);
@@ -122,7 +123,8 @@ public class DbThink extends Thread {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
                 if (biInserted <= limits.getDbLimit()) { // vorher 23 < 24 nun 24 <= 24 Limit: 24
-                    DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
+                    System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
+                    DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
                     } else {
@@ -143,7 +145,8 @@ public class DbThink extends Thread {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
                 if (biInserted <= limits.getDbLimit()) {
-                    DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
+                    DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
+                    System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
                     } else {
@@ -164,7 +167,8 @@ public class DbThink extends Thread {
             HashEntry hashEntry = new HashEntry(bi, ret);
             hashTable.set(hashEntry);
             if (biInserted <= limits.getDbLimit()) {
-                DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
+                DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
+                System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
                 if (dbConnection.createEntry(dbEntry)) {
                     ++written;
                 } else {
