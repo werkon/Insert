@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 import de.esnecca.multi.History;
 import de.esnecca.multi.db.Db;
 import de.esnecca.multi.db.DbConnection;
@@ -11,7 +9,7 @@ public class Database {
     public static void main(String[] args) throws Exception {
 
         History history = new History(7, 6, 2, 4);
-        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 9, 24, 16);
+        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 10, 24, 16);
         HashTable hashTable = new HashTable(1000 * 1000 * 50);
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
         DbConnection dbConnection = new DbConnection(db);

@@ -73,14 +73,16 @@ public class DbThink extends Thread {
         game.insert(x);
 
         BigInteger bi = null;
-        if (game.getInserted() < limits.getHashLimit()) {
+        int biInserted = game.getInserted();
+
+        if (game.getInserted() <= limits.getHashLimit()) {
             bi = game.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {
                 game.remove(x);
                 return hashEntry.getResult();
             }
-            if (game.getInserted() < limits.getDbLimit()) {
+            if (biInserted <= limits.getDbLimit()) { // 23 nun 24 / Limit: 24
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry != null) {
                     game.remove(x);
@@ -119,7 +121,7 @@ public class DbThink extends Thread {
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
-                if (game.getInserted() < limits.getDbLimit()) {
+                if (biInserted <= limits.getDbLimit()) { // vorher 23 < 24 nun 24 <= 24 Limit: 24
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
@@ -140,7 +142,7 @@ public class DbThink extends Thread {
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
-                if (game.getInserted() < limits.getDbLimit()) {
+                if (biInserted <= limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
@@ -161,7 +163,7 @@ public class DbThink extends Thread {
         if (bi != null) {
             HashEntry hashEntry = new HashEntry(bi, ret);
             hashTable.set(hashEntry);
-            if (game.getInserted() < limits.getDbLimit()) {
+            if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, game.getInserted() + 1);
                 if (dbConnection.createEntry(dbEntry)) {
                     ++written;
