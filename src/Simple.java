@@ -8,33 +8,27 @@ import de.esnecca.multi.HashThink;
 public class Simple {
     public static void main(String[] args) throws Exception {
 
-        History history = new History(7, 6, 2, 4);
-
-        HashEntry[] hashEntries = new HashEntry[1000*1000];
+        History history = new History(5, 4, 2, 4);
 
         Scanner keyboard = new Scanner(System.in);
 
+        Integer[] result = new Integer[history.getWidth()];
+        history.print(result);
+
         while (true) {
-            history.print();
-            System.out.println(hashEntries[5]);
 
             HashThink simpleThink = new HashThink(history,0);
 
-            // if( !history.isFull(0)){
-            //     System.out.println( "1:" + simpleThink.think(0) );
-            // }
-            // if( !history.isFull(1)){
-            //     System.out.println( "2:" + simpleThink.think(1) );
-            // }
-            // if( !history.isFull(2)){
-            //     System.out.println( "3:" + simpleThink.think(2) );
-            // }
-            // if( !history.isFull(3)){
-            //     System.out.println( "4:" + simpleThink.think(3) );
-            // }
-            // // if( !history.isFull(4)){
-            //     //System.out.println( "5:" + simpleThink.think(4) );
-            // }
+            for(int x = 0; x < history.getWidth(); ++x ){
+                if( history.isFull(x)){
+                    result[x] = null;
+                }else{
+                    result[x] = Integer.valueOf( simpleThink.think(x) );
+                }
+            }
+
+            history.print(result);
+
 
             String input = keyboard.nextLine();
 

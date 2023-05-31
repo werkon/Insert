@@ -294,29 +294,47 @@ public class Game extends Field {
     }
 
     public void print() {
-        System.out.print("   ");
+        System.out.format("    ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.format("%2d ", (x + 1));
+            System.out.format("%3d ", (x + 1));
         }
         System.out.println("");
-        System.out.print("   ");
+        System.out.format("    ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print("   |");
+            System.out.format("  | ");
         }
         System.out.println("");
         System.out.println("");
-        
+
         super.print();
-        System.out.print("   ");
+        System.out.format("    ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.print("   |");
+            System.out.format("  | ");
         }
         System.out.println("");
-        System.out.print("   ");
+        System.out.format("    ");
         for (int x = 0; x < getWidth(); ++x) {
-            System.out.format("%2d ",getInserted(x));
+            System.out.format("%3d ", getInserted(x));
         }
-        System.out.println(" - " + getInserted());
+        System.out.format(" - %d%n", getInserted());
+    }
+
+    public void print(Integer[] result) {
+        print();
+        System.out.print("    ");
+        for (int x = 0; x < result.length; ++x) {
+            System.out.format("  | ");
+        }
+        System.out.println("");
+        System.out.format("    ");
+        for (int x = 0; x < result.length; ++x) {
+            if (result[x] == null) {
+                System.out.format("    ");
+            } else {
+                System.out.format("%3d ", result[x].intValue());
+            }
+        }
+        System.out.println("");
     }
 
     public BigInteger getBigIntegerRevert() {

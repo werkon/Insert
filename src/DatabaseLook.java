@@ -18,35 +18,30 @@ public class DatabaseLook {
             dbConnection.createGame(history);
         }
         gameid = dbConnection.getGameId(history);
+        Integer[] results = new Integer[history.getWidth()];
 
         while (true) {
-            history.print();
-            System.out.print("   ");
-            for (int x = 0; x < history.getWidth(); ++x) {
-                System.out.print(" |");
-            }
-            System.out.println("");
-            System.out.print("   ");
             for (int x = 0; x < history.getWidth(); ++x) {
                 if (history.isFull(x)) {
-                    System.out.print("   x ");
-                }else{
-                    if( history.test(x)){
-                        System.out.format("%3d ", 1);
-                    }else{
+                    results[x] = null;
+                } else {
+                    if (history.test(x)) {
+                        results[x] = Integer.valueOf(1);
+                    } else {
                         history.insert(x);
                         DbEntry dbEntry = dbConnection.getDbEntry(history.getSmallestBigInteger(), gameid);
-                        if( dbEntry == null ){
-                            System.out.print("    ");
-                        }else{
-                            System.out.format("%3d ", dbEntry.getResult());
+                        if (dbEntry == null) {
+                            results[x] = null;
+                        } else {
+                            results[x] = Integer.valueOf(dbEntry.getResult());
                         }
                         history.remove();
                     }
                 }
             }
-            System.out.println("");
 
+            history.print(results);
+            System.out.println("");
 
             String input = keyboard.nextLine();
 
@@ -56,12 +51,14 @@ public class DatabaseLook {
 
             if ("c".equals(input)) {
                 history.reset();
+                continue;
             }
 
             if ("r".equals(input)) {
                 if (history.getInserted() > 0) {
                     history.remove();
                 }
+                continue;
             }
 
             int x = 0;

@@ -84,13 +84,13 @@ public class Field {
 
     public void print() {
         for (int y = height - 1; y >= 0; --y) {
-            System.out.format("%2d - ", (y + 1));
+            System.out.format("%2d -", (y + 1));
             for (int x = 0; x < width; ++x) {
-                int v = get(x,y);
-                if( v > 0 ){
-                    System.out.format("%2d ", v);
-                }else{
-                    System.out.print("    ");
+                int v = get(x, y);
+                if (v > 0) {
+                    System.out.format("%3d ", v);
+                } else {
+                    System.out.format("    ");
                 }
             }
             System.out.println("");

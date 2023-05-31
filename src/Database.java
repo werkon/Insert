@@ -12,7 +12,6 @@ public class Database {
 
         History history = new History(7, 6, 2, 4);
         DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 9, 24, 16);
-        Scanner keyboard = new Scanner(System.in);
         HashTable hashTable = new HashTable(1000 * 1000 * 50);
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
         DbConnection dbConnection = new DbConnection(db);
@@ -25,15 +24,14 @@ public class Database {
         long ocollisions = 0;
 
         while (true) {
-            history.print();
-
             DbThink[] threads = new DbThink[history.getWidth() * history.getWidth()];
             for (int x = 0; x < history.getWidth(); ++x) {
                 if (!history.isFull(x)) {
                     history.insert(x);
                     for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                         if (!history.isFull(x2)) {
-                            DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits, false);
+                            DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits,
+                                    false);
                             threads[x * history.getWidth() + x2] = dbThink;
                             dbThink.start();
                         }
@@ -56,62 +54,12 @@ public class Database {
                         }
                     }
                 }
-                System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions) + " Cache: " + hashTable.filled() + "%");
+                System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
+                        + " Cache: " + hashTable.filled() + "%");
                 owritten = written;
                 ocollisions = collisions;
                 Thread.sleep(1000 * 60);
             }
-
-            for (int x = 0; x < history.getWidth(); ++x) {
-                if (!history.isFull(x)) {
-                    DbThink dbThink = new DbThink(history, x, hashTable, new DbConnection(db), dbThinkLimits, true);
-                    threads[x * history.getWidth() + x] = dbThink;
-                    dbThink.start();
-                }
-            }
-
-            stop = false;
-            while (!stop) {
-                stop = true;
-                for (int x = 0; x < history.getWidth(); ++x) {
-                    if (threads[x] != null && threads[x].isAlive()) {
-                        stop = false;
-                    }
-                }
-                Thread.sleep(1000);
-            }
-
-            String input = keyboard.nextLine();
-
-            if ("q".equals(input)) {
-                break;
-            }
-
-            if ("c".equals(input)) {
-                history.reset();
-            }
-
-            if ("r".equals(input)) {
-                if (history.getInserted() > 0) {
-                    history.remove();
-                }
-            }
-
-            int x = 0;
-            try {
-                x = Integer.parseInt(input);
-            } catch (Exception ex) {
-                continue;
-            }
-            --x;
-            if (x >= 0 && x < history.getWidth() && !history.isFull(x)) {
-                if (history.test(x)) {
-                    System.out.println("*********************");
-                }
-                history.insert(x);
-            }
-
         }
-        keyboard.close();
     }
 }
