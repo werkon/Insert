@@ -30,8 +30,7 @@ public class Database {
                     history.insert(x);
                     for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                         if (!history.isFull(x2)) {
-                            DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits,
-                                    false);
+                            DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits);
                             threads[x * history.getWidth() + x2] = dbThink;
                             dbThink.start();
                         }
