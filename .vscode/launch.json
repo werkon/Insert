@@ -40,8 +40,7 @@
             "type": "java",
             "name": "Database",
             "request": "launch",
-            "mainClass": "Database",
-            "vmArgs": "-Xmx48g -Xms12g"
+            "mainClass": "Database"
         },
         {
             "type": "java",
