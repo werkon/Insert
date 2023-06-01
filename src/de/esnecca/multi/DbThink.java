@@ -63,14 +63,23 @@ public class DbThink extends Thread {
     }
 
     public int think(int x) throws SQLException {
-        if (game.test(x)) {
-            return 1;
-        }
+        // if (game.test(x)) {
+        //     return 1;
+        // }
         if (game.getInserted() >= game.getSize() - 1) {
             return 0;
         }
 
         game.insert(x);
+
+        for (int i = 0; i < game.getWidth(); ++i) {
+            if (!game.isFull(i)) {
+                if(game.test(i)){
+                    game.remove(x);
+                    return -2;
+                }
+            }
+        }
 
         BigInteger bi = null;
         int biInserted = game.getInserted();
@@ -202,7 +211,7 @@ public class DbThink extends Thread {
         }
     }
 
-    synchronized public void print(Game game, int ret) {
+    static synchronized public void print(Game game, int ret) {
         game.print();
         System.out.format("      result: %d", ret);
         System.out.println("");
