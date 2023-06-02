@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import de.esnecca.multi.hash.HashEntry;
 import de.esnecca.multi.hash.HashTable;
 
-public class HashThink2 extends Thread {
+public class HashThink extends Thread {
 
     private Game game;
     private int x;
@@ -12,7 +12,7 @@ public class HashThink2 extends Thread {
     private int hashLimit;
     int result;
 
-    public HashThink2(Game game, int x, HashTable hashTable, int hashLimit) {
+    public HashThink(Game game, int x, HashTable hashTable, int hashLimit) {
         this.game = new Game(game);
         this.x = x;
         this.hashTable = hashTable;

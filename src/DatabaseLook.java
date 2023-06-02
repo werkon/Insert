@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-import de.esnecca.multi.HashThink2;
+import de.esnecca.multi.HashThink;
 import de.esnecca.multi.History;
 import de.esnecca.multi.db.Db;
 import de.esnecca.multi.db.DbConnection;
@@ -54,11 +54,11 @@ public class DatabaseLook {
             }
 
             if(history.getInserted() >= dbLimit ){
-                HashThink2[] threads = new HashThink2[history.getWidth()];
+                HashThink[] threads = new HashThink[history.getWidth()];
                 for (int x = 0; x < history.getWidth(); ++x) {
                     if( results[x] == null ){
                         if (!history.isFull(x)) {
-                            HashThink2 hashThink2 = new HashThink2(history, x, hashTable, history.getSize() - 10);
+                            HashThink hashThink2 = new HashThink(history, x, hashTable, history.getSize() - 10);
                             threads[x] = hashThink2;
                             hashThink2.start();
                         }
