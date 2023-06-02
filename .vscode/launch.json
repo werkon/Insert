@@ -12,32 +12,6 @@
         },
         {
             "type": "java",
-            "name": "App",
-            "request": "launch",
-            "mainClass": "App"
-        },
-        {
-            "type": "java",
-            "name": "Simple",
-            "request": "launch",
-            "mainClass": "Simple"
-        },
-        {
-            "type": "java",
-            "name": "Threads",
-            "request": "launch",
-            "mainClass": "Threads",
-            "vmArgs": "-Xmx12g -Xms12g"
-        },
-        {
-            "type": "java",
-            "name": "ThreadExs",
-            "request": "launch",
-            "mainClass": "ThreadExs",
-            "vmArgs": "-Xmx48g -Xms12g"
-        },
-        {
-            "type": "java",
             "name": "Database",
             "request": "launch",
             "mainClass": "Database"
