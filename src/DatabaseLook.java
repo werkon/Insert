@@ -1,18 +1,22 @@
 import java.util.Scanner;
 
+import de.esnecca.multi.HashThink2;
 import de.esnecca.multi.History;
 import de.esnecca.multi.db.Db;
 import de.esnecca.multi.db.DbConnection;
 import de.esnecca.multi.db.DbEntry;
+import de.esnecca.multi.hash.HashTable;
 
 public class DatabaseLook {
 
     public static void main(String[] args) throws Exception {
 
         History history = new History(7, 6, 2, 4);
+        int dbLimit = 20;
         Scanner keyboard = new Scanner(System.in);
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
         DbConnection dbConnection = new DbConnection(db);
+        HashTable hashTable = new HashTable(1000*1000);
         int gameid = dbConnection.getGameId(history);
         if (gameid <= 0) {
             dbConnection.createGame(history);
@@ -22,20 +26,60 @@ public class DatabaseLook {
 
         while (true) {
             for (int x = 0; x < history.getWidth(); ++x) {
-                if (history.isFull(x)) {
-                    results[x] = null;
-                } else {
+                Integer result = null;
+                if (!history.isFull(x)) {
                     if (history.test(x)) {
-                        results[x] = Integer.valueOf(1);
+                        result = Integer.valueOf(1);
                     } else {
                         history.insert(x);
-                        DbEntry dbEntry = dbConnection.getDbEntry(history.getSmallestBigInteger(), gameid);
-                        if (dbEntry == null) {
-                            results[x] = null;
-                        } else {
-                            results[x] = Integer.valueOf(dbEntry.getResult());
+
+                        for(int i = 0; i < history.getWidth(); ++i ){
+                            if(!history.isFull(i)){
+                                if(history.test(i)){
+                                    result = Integer.valueOf(-2);
+                                    break;
+                                }
+                            }
+                        }
+                        if(result == null){
+                            DbEntry dbEntry = dbConnection.getDbEntry(history.getSmallestBigInteger(), gameid);
+                            if (dbEntry != null) {
+                                result = Integer.valueOf(dbEntry.getResult());
+                            }
                         }
                         history.remove();
+                    }
+                }
+                results[x] = result;
+            }
+
+            if(history.getInserted() >= dbLimit ){
+                HashThink2[] threads = new HashThink2[history.getWidth()];
+                for (int x = 0; x < history.getWidth(); ++x) {
+                    if( results[x] == null ){
+                        if (!history.isFull(x)) {
+                            HashThink2 hashThink2 = new HashThink2(history, x, hashTable, history.getSize() - 10);
+                            threads[x] = hashThink2;
+                            hashThink2.start();
+                        }
+                    }
+                }
+                boolean stop = false;
+                while(!stop){
+                    System.out.println("Think...");
+                    Thread.sleep(100);
+                    stop = true;
+                    for (int x = 0; x < history.getWidth(); ++x) {
+                        if( threads[x] != null ){
+                            if( threads[x].isAlive() ){
+                                stop = false;
+                            }
+                        }
+                    }
+                }
+                for (int x = 0; x < history.getWidth(); ++x) {
+                    if( threads[x] != null ){
+                        results[x] = threads[x].getResult();
                     }
                 }
             }
@@ -51,6 +95,11 @@ public class DatabaseLook {
 
             if ("c".equals(input)) {
                 history.reset();
+                continue;
+            }
+
+            if ("t".equals(input)) {
+                hashTable = new HashTable(1000*1000);
                 continue;
             }
 
