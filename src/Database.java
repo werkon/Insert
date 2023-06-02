@@ -50,11 +50,11 @@ public class Database {
                     }
                 }
             }
+            Thread.sleep(1000 * 60);
             System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
                     + " Cache: " + hashTable.filled() + "%");
             owritten = written;
             ocollisions = collisions;
-            Thread.sleep(1000 * 60);
         }
 
 
@@ -82,11 +82,11 @@ public class Database {
                     }
                 }
             }
+            Thread.sleep(1000 * 60);
             System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
                     + " Cache: " + hashTable.filled() + "%");
             owritten = written;
             ocollisions = collisions;
-            Thread.sleep(1000 * 60);
         }
     }
 }
