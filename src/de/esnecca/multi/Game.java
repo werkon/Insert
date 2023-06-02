@@ -328,10 +328,14 @@ public class Game extends Field {
         System.out.println("");
         System.out.format("    ");
         for (int x = 0; x < result.length; ++x) {
-            if (result[x] == null) {
-                System.out.format("    ");
+            if (isFull(x)) {
+                System.out.format("  x ");
             } else {
-                System.out.format("%3d ", result[x].intValue());
+                if (result[x] == null) {
+                    System.out.format("    ");
+                } else {
+                    System.out.format("%3d ", result[x].intValue());
+                }
             }
         }
         System.out.println("");
