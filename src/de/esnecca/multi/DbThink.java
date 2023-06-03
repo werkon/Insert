@@ -64,7 +64,7 @@ public class DbThink extends Thread {
 
     public int think(int x) throws SQLException {
         // if (game.test(x)) {
-        //     return 1;
+        // return 1;
         // }
         if (game.getInserted() >= game.getSize() - 1) {
             return 0;
@@ -74,7 +74,7 @@ public class DbThink extends Thread {
 
         for (int i = 0; i < game.getWidth(); ++i) {
             if (!game.isFull(i)) {
-                if(game.test(i)){
+                if (game.test(i)) {
                     game.remove(x);
                     return -2;
                 }
@@ -92,7 +92,8 @@ public class DbThink extends Thread {
                 return hashEntry.getResult();
             }
             if (biInserted <= limits.getDbLimit()) { // 23 nun 24 / Limit: 24
-                // System.out.format("READ biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
+                // System.out.format("READ biInserted: %d, dbLimit: %d%n", biInserted,
+                // limits.getDbLimit());
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry != null) {
                     game.remove(x);
@@ -132,17 +133,18 @@ public class DbThink extends Thread {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
                 if (biInserted <= limits.getDbLimit()) { // vorher 23 < 24 nun 24 <= 24 Limit: 24
-                    // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
+                    // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted,
+                    // limits.getDbLimit());
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
+                        if (game.getInserted() < limits.getPrintLimit()) {
+                            game.insert(x);
+                            print(game, ret);
+                            game.remove(x);
+                        }
                     } else {
                         ++collisions;
-                    }
-                    if (game.getInserted() < limits.getPrintLimit()) {
-                        game.insert(x);
-                        print(game, ret);
-                        game.remove(x);
                     }
                 }
             }
@@ -155,16 +157,17 @@ public class DbThink extends Thread {
                 hashTable.set(hashEntry);
                 if (biInserted <= limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
-                    // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
+                    // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted,
+                    // limits.getDbLimit());
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
+                        if (game.getInserted() < limits.getPrintLimit()) {
+                            game.insert(x);
+                            print(game, ret);
+                            game.remove(x);
+                        }
                     } else {
                         ++collisions;
-                    }
-                    if (game.getInserted() < limits.getPrintLimit()) {
-                        game.insert(x);
-                        print(game, ret);
-                        game.remove(x);
                     }
                 }
             }
@@ -177,16 +180,17 @@ public class DbThink extends Thread {
             hashTable.set(hashEntry);
             if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
-                // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted, limits.getDbLimit());
+                // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted,
+                // limits.getDbLimit());
                 if (dbConnection.createEntry(dbEntry)) {
                     ++written;
+                    if (game.getInserted() < limits.getPrintLimit()) {
+                        game.insert(x);
+                        print(game, ret);
+                        game.remove(x);
+                    }
                 } else {
                     ++collisions;
-                }
-                if (game.getInserted() < limits.getPrintLimit()) {
-                    game.insert(x);
-                    print(game, ret);
-                    game.remove(x);
                 }
             }
         }

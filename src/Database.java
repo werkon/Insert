@@ -9,8 +9,8 @@ public class Database {
     public static void main(String[] args) throws Exception {
 
         History history = new History(7, 6, 2, 4);
-        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 10, 20, 12);
-        HashTable hashTable = new HashTable(1000 * 1000 * 50);
+        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 11, 20, 12);
+        HashTable hashTable = new HashTable(1000 * 1000 * 100);
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
         DbConnection dbConnection = new DbConnection(db);
         if (dbConnection.getGameId(history) <= 0) {
@@ -57,7 +57,6 @@ public class Database {
             Thread.sleep(1000 * 60);
         }
 
-
         owritten = 0;
         ocollisions = 0;
         for (int x = 0; x < history.getWidth(); ++x) {
@@ -84,6 +83,14 @@ public class Database {
             }
             System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
                     + " Cache: " + hashTable.filled() + "%");
+
+            Runtime rt = Runtime.getRuntime();
+
+            long total_mem = rt.totalMemory();
+            long free_mem = rt.freeMemory();
+            long used_mem = total_mem - free_mem;
+            System.out.println("T: " + total_mem + " F: " + free_mem + " U: " + used_mem);
+
             owritten = written;
             ocollisions = collisions;
             Thread.sleep(1000 * 60);

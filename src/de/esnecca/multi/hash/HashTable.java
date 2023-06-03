@@ -32,13 +32,25 @@ public class HashTable {
         }
     }
 
-    public synchronized HashEntry get(BigInteger i) {
-        return hashEntries[i.mod(size.getBigPrime()).intValue()];
+    private synchronized HashEntry _get(int i) {
+        return hashEntries[i];
     }
 
-    public synchronized void set(HashEntry hashEntry) {
-        hashEntries[hashEntry.getValue().mod(size.getBigPrime()).intValue()] = hashEntry;
+    public HashEntry get(BigInteger bi) {
+        int i = bi.mod(size.getBigPrime()).intValue();
+        return _get(i);
     }
+
+    private synchronized void _set(HashEntry hashEntry, int i) {
+        hashEntries[i] = hashEntry;
+    }
+
+
+    public void set(HashEntry hashEntry) {
+        int i = hashEntry.getValue().mod(size.getBigPrime()).intValue();
+        _set(hashEntry, i);
+    }
+
 
 
     public synchronized int filled() {
