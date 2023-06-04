@@ -21,7 +21,12 @@
             "name": "DatabaseLook",
             "request": "launch",
             "mainClass": "DatabaseLook",
+        },
+        {
+            "type": "java",
+            "name": "DatabaseTree",
+            "request": "launch",
+            "mainClass": "DatabaseTree",
         }
-
     ]
 }
