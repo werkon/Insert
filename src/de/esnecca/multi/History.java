@@ -52,6 +52,41 @@ public class History extends Game {
         }
     }
 
+    public void print(Integer[] result) {
+        print();
+        System.out.print("    ");
+        for (int x = 0; x < result.length; ++x) {
+            System.out.format("  |");
+            if (x == getHistory(0)) {
+                if (x == getHistory(1)) {
+                    System.out.format("³");
+                } else {
+                    System.out.format("¹");
+                }
+            } else {
+                if (x == getHistory(1)) {
+                    System.out.format("²");
+                } else {
+                    System.out.format(" ");
+                }
+            }
+        }
+        System.out.println("");
+        System.out.format("    ");
+        for (int x = 0; x < result.length; ++x) {
+            if (isFull(x)) {
+                System.out.format("  x ");
+            } else {
+                if (result[x] == null) {
+                    System.out.format("    ");
+                } else {
+                    System.out.format("%3d ", result[x].intValue());
+                }
+            }
+        }
+        System.out.println("");
+    }
+
     public void remove() {
         remove(history[getInserted() - 1]);
     }
