@@ -115,4 +115,27 @@ public class HistoryTest {
         history.reset();
         assertEquals(0, history.getInserted());
     }
+
+    @Test
+    public void testGetHistory() {
+        assertEquals(-1, history.getHistory(0));
+        assertEquals(-1, history.getHistory(1));
+        assertEquals(-1, history.getHistory(2));
+
+        history.insert(0);
+        assertEquals(0, history.getHistory(0));
+        assertEquals(-1, history.getHistory(1));
+        assertEquals(-1, history.getHistory(2));
+
+        history.insert(1);
+        assertEquals(0, history.getHistory(0));
+        assertEquals(1, history.getHistory(1));
+        assertEquals(-1, history.getHistory(2));
+
+        history.remove();
+        assertEquals(0, history.getHistory(0));
+        assertEquals(-1, history.getHistory(1));
+        assertEquals(-1, history.getHistory(2));
+
+    }
 }
