@@ -16,6 +16,8 @@ public class DatabaseTree {
         }
         gameid = dbConnection.getGameId(history);
 
+        System.out.print("\033[H\033[2J");
+
         while (true) {
 
             Integer[] results = new Integer[history.getWidth()];
@@ -48,9 +50,12 @@ public class DatabaseTree {
                 }
                 results[x] = result;
             }
-            System.out.print("\033[H\033[2J");
-            history.print(results);
-            System.out.flush();
+            if (history.getInserted() == 19) {
+                // System.out.print("\033[H\033[2J");
+                System.out.print("\033[H");
+                history.print(results);
+                System.out.flush();
+            }
 
             if (lag) {
                 if (history.getInserted() < 19) {
@@ -68,7 +73,7 @@ public class DatabaseTree {
                     break;
                 }
             }
-            Thread.sleep(1000);
+            Thread.sleep(100);
         }
 
         dbConnection.close();
