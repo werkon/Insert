@@ -24,6 +24,8 @@ public class DatabaseLook {
         gameid = dbConnection.getGameId(history);
         Integer[] results = new Integer[history.getWidth()];
 
+        System.out.print("\033[H\033[2J");
+
         while (true) {
             for (int x = 0; x < history.getWidth(); ++x) {
                 Integer result = null;
@@ -84,8 +86,12 @@ public class DatabaseLook {
                 }
             }
 
+            System.out.print("\033[H\033[2J");
             history.print(results);
             System.out.println("");
+            if (history.test()) {
+                System.out.println("*********************");
+            }
 
             String input = keyboard.nextLine();
 
@@ -110,6 +116,10 @@ public class DatabaseLook {
                 continue;
             }
 
+            if(history.test()){
+                continue;
+            }
+            
             int x = 0;
             try {
                 x = Integer.parseInt(input);
@@ -118,9 +128,6 @@ public class DatabaseLook {
             }
             --x;
             if (x >= 0 && x < history.getWidth() && !history.isFull(x)) {
-                if (history.test(x)) {
-                    System.out.println("*********************");
-                }
                 history.insert(x);
             }
 

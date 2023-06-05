@@ -1,6 +1,8 @@
 
 import java.util.Scanner;
 
+import de.esnecca.multi.Field;
+import de.esnecca.multi.Game;
 import de.esnecca.multi.History;
 
 public class Simple {
@@ -12,12 +14,10 @@ public class Simple {
 
         while (true) {
 
+            System.out.print("\033[H\033[2J");
+
             for (int x = 0; x < history.getWidth(); ++x) {
-                if (history.isFull(x)) {
-                    result[x] = null;
-                } else {
-                    result[x] = null;
-                }
+                result[x] = Integer.valueOf(x);
             }
 
             history.print(result);

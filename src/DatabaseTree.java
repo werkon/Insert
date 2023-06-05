@@ -50,8 +50,7 @@ public class DatabaseTree {
                 }
                 results[x] = result;
             }
-            if (history.getInserted() == 19) {
-                // System.out.print("\033[H\033[2J");
+            if (true || history.getInserted() == 19) {
                 System.out.print("\033[H");
                 history.print(results);
                 System.out.flush();

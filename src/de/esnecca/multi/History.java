@@ -52,10 +52,10 @@ public class History extends Game {
         }
     }
 
-    public void print(Integer[] result) {
-        print();
+    public void print(){
+        super.print();
         System.out.print("    ");
-        for (int x = 0; x < result.length; ++x) {
+        for (int x = 0; x < getWidth(); ++x) {
             System.out.format("  |");
             if (x == getHistory(0)) {
                 if (x == getHistory(1)) {
@@ -72,8 +72,12 @@ public class History extends Game {
             }
         }
         System.out.println("");
+    }
+
+    public void print(Integer[] result) {
+        print();
         System.out.format("    ");
-        for (int x = 0; x < result.length; ++x) {
+        for (int x = 0; x < getWidth(); ++x) {
             if (isFull(x)) {
                 System.out.format("  x ");
             } else {

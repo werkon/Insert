@@ -137,5 +137,10 @@ public class HistoryTest {
         assertEquals(-1, history.getHistory(1));
         assertEquals(-1, history.getHistory(2));
 
+        history.remove(0);
+        assertEquals(-1, history.getHistory(0));
+        assertEquals(-1, history.getHistory(1));
+        assertEquals(-1, history.getHistory(2));
+
     }
 }

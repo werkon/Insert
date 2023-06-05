@@ -294,18 +294,6 @@ public class Game extends Field {
     }
 
     public void print() {
-        System.out.format("    ");
-        for (int x = 0; x < getWidth(); ++x) {
-            System.out.format("%3d ", (x + 1));
-        }
-        System.out.println("");
-        System.out.format("    ");
-        for (int x = 0; x < getWidth(); ++x) {
-            System.out.format("  | ");
-        }
-        System.out.println("");
-        System.out.println("");
-
         super.print();
         System.out.format("    ");
         for (int x = 0; x < getWidth(); ++x) {

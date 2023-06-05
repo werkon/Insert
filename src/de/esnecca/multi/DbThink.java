@@ -10,7 +10,7 @@ import de.esnecca.multi.hash.HashTable;
 
 public class DbThink extends Thread {
 
-    private Game game;
+    private History history;
     private int x;
     private HashTable hashTable;
     private DbConnection dbConnection;
@@ -20,15 +20,15 @@ public class DbThink extends Thread {
     private long written;
     private long collisions;
 
-    public DbThink(Game game, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits)
+    public DbThink(History history, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits)
             throws SQLException {
-        this.game = new Game(game);
+        this.history = new History(history);
         this.x = x;
         this.hashTable = hashTable;
         this.dbConnection = dbConnection;
         this.limits = limits;
 
-        gameid = dbConnection.getGameId(game);
+        gameid = dbConnection.getGameId(history);
 
         // hashLimit = game.getSize() - 9;
         // dbLimit = 24; // game.getSize() / 2;
@@ -66,29 +66,29 @@ public class DbThink extends Thread {
         // if (game.test(x)) {
         // return 1;
         // }
-        if (game.getInserted() >= game.getSize() - 1) {
+        if (history.getInserted() >= history.getSize() - 1) {
             return 0;
         }
 
-        game.insert(x);
+        history.insert(x);
 
-        for (int i = 0; i < game.getWidth(); ++i) {
-            if (!game.isFull(i)) {
-                if (game.test(i)) {
-                    game.remove(x);
+        for (int i = 0; i < history.getWidth(); ++i) {
+            if (!history.isFull(i)) {
+                if (history.test(i)) {
+                    history.remove(x);
                     return -2;
                 }
             }
         }
 
         BigInteger bi = null;
-        int biInserted = game.getInserted();
+        int biInserted = history.getInserted();
 
-        if (game.getInserted() <= limits.getHashLimit()) {
-            bi = game.getSmallestBigInteger();
+        if (history.getInserted() <= limits.getHashLimit()) {
+            bi = history.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {
-                game.remove(x);
+                history.remove(x);
                 return hashEntry.getResult();
             }
             if (biInserted <= limits.getDbLimit()) { // 23 nun 24 / Limit: 24
@@ -96,7 +96,7 @@ public class DbThink extends Thread {
                 // limits.getDbLimit());
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry != null) {
-                    game.remove(x);
+                    history.remove(x);
                     return dbEntry.getResult();
                 }
             }
@@ -105,8 +105,8 @@ public class DbThink extends Thread {
         int kleinstesPositivesR = 0;
         int groesstesNegativesR = 0;
         boolean unentschieden = false;
-        for (int i = 0; i < game.getWidth(); ++i) {
-            if (!game.isFull(i)) {
+        for (int i = 0; i < history.getWidth(); ++i) {
+            if (!history.isFull(i)) {
                 int r = think(i);
                 if (r > 0) {
                     if (kleinstesPositivesR == 0 || r < kleinstesPositivesR) {
@@ -124,7 +124,7 @@ public class DbThink extends Thread {
             }
         }
 
-        game.remove(x);
+        history.remove(x);
 
         if (kleinstesPositivesR > 0) {
 
@@ -138,10 +138,11 @@ public class DbThink extends Thread {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
-                        if (game.getInserted() < limits.getPrintLimit()) {
-                            game.insert(x);
-                            print(game, ret);
-                            game.remove(x);
+                        if (history.getInserted() < limits.getPrintLimit()) {
+                            history.insert(x);
+                            print(history, ret);
+                            System.out.println("");
+                            history.remove(x);
                         }
                     } else {
                         ++collisions;
@@ -161,10 +162,11 @@ public class DbThink extends Thread {
                     // limits.getDbLimit());
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
-                        if (game.getInserted() < limits.getPrintLimit()) {
-                            game.insert(x);
-                            print(game, ret);
-                            game.remove(x);
+                        if (history.getInserted() < limits.getPrintLimit()) {
+                            history.insert(x);
+                            print(history, ret);
+                            System.out.println("");
+                            history.remove(x);
                         }
                     } else {
                         ++collisions;
@@ -184,10 +186,11 @@ public class DbThink extends Thread {
                 // limits.getDbLimit());
                 if (dbConnection.createEntry(dbEntry)) {
                     ++written;
-                    if (game.getInserted() < limits.getPrintLimit()) {
-                        game.insert(x);
-                        print(game, ret);
-                        game.remove(x);
+                    if (history.getInserted() < limits.getPrintLimit()) {
+                        history.insert(x);
+                        print(history, ret);
+                        System.out.println("");
+                        history.remove(x);
                     }
                 } else {
                     ++collisions;

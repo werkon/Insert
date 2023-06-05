@@ -83,6 +83,18 @@ public class Field {
     }
 
     public void print() {
+        System.out.format("    ");
+        for (int x = 0; x < width; ++x) {
+            System.out.format("%3d ", (x + 1));
+        }
+        System.out.println("");
+        System.out.format("    ");
+        for (int x = 0; x < width; ++x) {
+            System.out.format("  | ");
+        }
+        System.out.println("");
+        System.out.println("");
+
         for (int y = height - 1; y >= 0; --y) {
             System.out.format("%2d -", (y + 1));
             for (int x = 0; x < width; ++x) {
