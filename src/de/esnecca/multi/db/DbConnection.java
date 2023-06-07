@@ -39,7 +39,7 @@ public class DbConnection {
         preparedStatementDeleteAllReservations = conn.prepareStatement(sql);
         sql = "delete from reservations where bi = ? and gameid = ?;";
         preparedStatementDeleteReservation = conn.prepareStatement(sql);
-        sql = "insert into reservations (bi, gameid) values(?,?);";
+        sql = "insert into reservations (bi, gameid, inserted) values(?,?,?);";
         preparedStatementCreateGame = conn.prepareStatement(sql);
     }
 
@@ -163,10 +163,11 @@ public class DbConnection {
         return true;
     }
 
-    public boolean createReservation(BigInteger bi, int gameid) throws SQLException {
+    public boolean createReservation(BigInteger bi, int gameid, int inserted) throws SQLException {
 
         preparedStatementCreateReservation.setBigDecimal(1, new BigDecimal(bi));
         preparedStatementCreateReservation.setInt(2, gameid);
+        preparedStatementCreateReservation.setInt(3, inserted);
 
         try {
             preparedStatementCreateReservation.execute();

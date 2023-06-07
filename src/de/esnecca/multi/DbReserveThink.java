@@ -96,7 +96,7 @@ public class DbReserveThink extends Thread {
                 // limits.getDbLimit());
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry == null) {
-                    if(!dbConnection.createReservation(bi, gameid)){
+                    if(!dbConnection.createReservation(bi, gameid, history.getInserted())){
                         while(true){
                             try {
                                 Thread.sleep(100);
