@@ -91,4 +91,48 @@ public class DbTest {
         assertTrue(dbConnection.deleteGame(game));
     }
 
+    @Test
+    public void testReservation() throws SQLException {
+        Game game = new Game(1, 1, 1, 1);
+        dbConnection.createGame(game);
+        int gameId = dbConnection.getGameId(game);
+        assertTrue(gameId > 0);
+
+        dbConnection.deleteAllReservations(gameId);
+
+        BigInteger bi = BigInteger.valueOf(123);
+        assertTrue(dbConnection.createReservation(bi, gameId));
+        assertFalse(dbConnection.createReservation(bi, gameId));
+        assertFalse(dbConnection.createReservation(bi, gameId));
+
+        BigInteger bi2 = BigInteger.valueOf(321);
+        assertTrue(dbConnection.createReservation(bi2, gameId));
+        assertFalse(dbConnection.createReservation(bi2, gameId));
+        assertFalse(dbConnection.createReservation(bi2, gameId));
+
+        dbConnection.deleteReservation(bi, gameId);
+
+        assertTrue(dbConnection.createReservation(bi, gameId));
+        assertFalse(dbConnection.createReservation(bi, gameId));
+        assertFalse(dbConnection.createReservation(bi, gameId));
+
+        assertFalse(dbConnection.createReservation(bi2, gameId));
+        assertFalse(dbConnection.createReservation(bi2, gameId));
+
+        dbConnection.deleteAllReservations(gameId);
+
+        assertTrue(dbConnection.createReservation(bi, gameId));
+        assertFalse(dbConnection.createReservation(bi, gameId));
+        assertFalse(dbConnection.createReservation(bi, gameId));
+
+        assertTrue(dbConnection.createReservation(bi2, gameId));
+        assertFalse(dbConnection.createReservation(bi2, gameId));
+        assertFalse(dbConnection.createReservation(bi2, gameId));
+
+        dbConnection.deleteAllReservations(gameId);
+
+        assertTrue(dbConnection.deleteGame(game));
+
+    }
+
 }
