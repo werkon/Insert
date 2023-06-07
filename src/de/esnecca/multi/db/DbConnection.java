@@ -17,9 +17,11 @@ public class DbConnection {
     private PreparedStatement preparedStatementGetEntry;
     private PreparedStatement preparedStatementCreateEntry;
     private PreparedStatement preparedStatementDeleteEntry;
-    
+    private PreparedStatement preparedStatementDeleteAllReservations;
+    private PreparedStatement preparedStatementDeleteReservation;
+    private PreparedStatement preparedStatementCreateReservation;
 
-    public DbConnection(Db db) throws SQLException{
+    public DbConnection(Db db) throws SQLException {
         conn = db.getConnection();
         String sql = "select id from games where width = ? and height = ? and colors = ? and wins = ?;";
         preparedStatementGetGameId = conn.prepareStatement(sql);
@@ -33,9 +35,15 @@ public class DbConnection {
         preparedStatementCreateEntry = conn.prepareStatement(sql);
         sql = "delete from entries where bi = ? and gameid = ?;";
         preparedStatementDeleteEntry = conn.prepareStatement(sql);
+        sql = "delete from reservations where gameid = ?;";
+        preparedStatementDeleteAllReservations = conn.prepareStatement(sql);
+        sql = "delete from reservations where bi = ? and gameid = ?;";
+        preparedStatementDeleteReservation = conn.prepareStatement(sql);
+        sql = "insert into reservations (bi, gameid) values(?,?);";
+        preparedStatementCreateGame = conn.prepareStatement(sql);
     }
 
-    public void close() throws SQLException{
+    public void close() throws SQLException {
         preparedStatementGetGameId.close();
         preparedStatementCreateGame.close();
         preparedStatementDeleteGame.close();
@@ -136,6 +144,40 @@ public class DbConnection {
 
         rs.close();
         return null;
+    }
+
+    public boolean deleteAllReservations(int gameid) throws SQLException {
+
+        preparedStatementDeleteAllReservations.setInt(1, gameid);
+        preparedStatementDeleteAllReservations.execute();
+
+        return true;
+    }
+
+    public boolean deleteReservation(BigInteger bi, int gameid) throws SQLException {
+
+        preparedStatementDeleteReservation.setBigDecimal(1, new BigDecimal(bi));
+        preparedStatementDeleteReservation.setInt(2, gameid);
+        preparedStatementDeleteReservation.execute();
+
+        return true;
+    }
+
+    public boolean createReservation(BigInteger bi, int gameid) throws SQLException {
+
+        preparedStatementCreateReservation.setBigDecimal(1, new BigDecimal(bi));
+        preparedStatementCreateReservation.setInt(2, gameid);
+
+        try {
+            preparedStatementCreateReservation.execute();
+        } catch (SQLException sex) {
+            String s = sex.getSQLState();
+            if (s.equals("23505")) {
+                return false;
+            }
+            throw sex;
+        }
+        return true;
     }
 
 
