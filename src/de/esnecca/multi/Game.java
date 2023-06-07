@@ -9,12 +9,16 @@ public class Game extends Field {
     private int inserted;
     private int currentColor;
     private int[] insertedRow;
+    private BigInteger mulitplicatorColors;
+    private BigInteger mulitplicatorHeight;
 
     public Game(int width, int height, int colors, int wins) {
         super(width, height);
         this.colors = colors;
         this.wins = wins;
         insertedRow = new int[width];
+        mulitplicatorColors = BigInteger.valueOf(colors);
+        mulitplicatorHeight = BigInteger.valueOf(height + 1);
         reset();
     }
 
@@ -28,6 +32,8 @@ public class Game extends Field {
         for (int x = 0; x < getWidth(); ++x) {
             insertedRow[x] = g.insertedRow[x];
         }
+        mulitplicatorColors = g.mulitplicatorColors;
+        mulitplicatorHeight = g.mulitplicatorHeight;
     }
 
     public void reset() {
@@ -290,6 +296,14 @@ public class Game extends Field {
                 return false;
             }
         }
+
+        if (!g.mulitplicatorColors.equals(mulitplicatorColors)) {
+            return false;
+        }
+        if (!g.mulitplicatorHeight.equals(mulitplicatorHeight)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -332,17 +346,15 @@ public class Game extends Field {
     public BigInteger getBigIntegerRevert() {
         BigInteger i = BigInteger.valueOf(0);
 
-        BigInteger m = BigInteger.valueOf(getColors());
         for (int x = getWidth() - 1; x >= 0; --x) {
-            for (int y = 0; y < getInserted(x); ++y) {
-                i = i.multiply(m);
+            for (int y = 0; y < insertedRow[x]; ++y) {
+                i = i.multiply(mulitplicatorColors);
                 i = i.add(BigInteger.valueOf(get(x, y) - 1));
             }
         }
-        m = BigInteger.valueOf(getHeight() + 1);
         for (int x = getWidth() - 1; x >= 0; --x) {
-            i = i.multiply(m);
-            i = i.add(BigInteger.valueOf(getInserted(x)));
+            i = i.multiply(mulitplicatorHeight);
+            i = i.add(BigInteger.valueOf(insertedRow[x]));
         }
         return i;
     }
@@ -350,17 +362,15 @@ public class Game extends Field {
     public BigInteger getBigInteger() {
         BigInteger i = BigInteger.valueOf(0);
 
-        BigInteger m = BigInteger.valueOf(getColors());
         for (int x = 0; x < getWidth(); ++x) {
-            for (int y = 0; y < getInserted(x); ++y) {
-                i = i.multiply(m);
+            for (int y = 0; y < insertedRow[x]; ++y) {
+                i = i.multiply(mulitplicatorColors);
                 i = i.add(BigInteger.valueOf(get(x, y) - 1));
             }
         }
-        m = BigInteger.valueOf(getHeight() + 1);
         for (int x = 0; x < getWidth(); ++x) {
-            i = i.multiply(m);
-            i = i.add(BigInteger.valueOf(getInserted(x)));
+            i = i.multiply(mulitplicatorHeight);
+            i = i.add(BigInteger.valueOf(insertedRow[x]));
         }
         return i;
     }
@@ -378,19 +388,17 @@ public class Game extends Field {
 
     public void fromBigInteger(BigInteger bi) {
         reset();
-        BigInteger d = BigInteger.valueOf(getHeight() + 1);
         for (int x = getWidth() - 1; x >= 0; --x) {
-            BigInteger[] dr = bi.divideAndRemainder(d);
+            BigInteger[] dr = bi.divideAndRemainder(mulitplicatorHeight);
             int i = dr[1].intValueExact();
             insertedRow[x] = i;
             inserted += i;
             bi = dr[0];
         }
 
-        d = BigInteger.valueOf(getColors());
         for (int x = getWidth() - 1; x >= 0; --x) {
             for (int y = getInserted(x) - 1; y >= 0; --y) {
-                BigInteger[] dr = bi.divideAndRemainder(d);
+                BigInteger[] dr = bi.divideAndRemainder(mulitplicatorColors);
                 int i = dr[1].intValueExact() + 1;
                 set(x, y, i);
                 bi = dr[0];
