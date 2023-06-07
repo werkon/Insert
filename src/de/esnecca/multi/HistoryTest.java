@@ -107,6 +107,21 @@ public class HistoryTest {
             }
         }
         assertEquals(0, history.getInserted());
+
+        //  Test equality remove() & remove(x)
+        history.insert(0);
+        history.insert(1);
+        history.insert(1);
+        History history2 = new History(history);
+        history.remove();
+        history2.remove(1);        
+        assertEquals(history,history2);
+        history.remove();
+        history2.remove(1);        
+        assertEquals(history,history2);
+        history.remove();
+        history2.remove(0);        
+        assertEquals(history,history2);
     }
 
     @Test
