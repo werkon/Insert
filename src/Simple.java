@@ -1,7 +1,6 @@
 
 import java.util.Scanner;
 
-import de.esnecca.multi.Game;
 import de.esnecca.multi.History;
 
 public class Simple {
