@@ -93,7 +93,22 @@ public class DbThink extends Thread {
             }
             if (biInserted <= limits.getDbLimit()) { 
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
-                if (dbEntry != null) {
+
+                if (dbEntry == null) {
+                    if(!reserve.reserve(bi, biInserted)){
+                        while(true){
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                            }
+                            dbEntry = dbConnection.getDbEntry(bi, gameid);
+                            if( dbEntry != null ){
+                                history.remove(x);
+                                return dbEntry.getResult();
+                            }
+                        }
+                    }
+                }else{
                     history.remove(x);
                     return dbEntry.getResult();
                 }
@@ -143,6 +158,7 @@ public class DbThink extends Thread {
                     } else {
                         ++collisions;
                     }
+                    reserve.free(bi);
                 }
             }
             return ret;
@@ -165,6 +181,7 @@ public class DbThink extends Thread {
                     } else {
                         ++collisions;
                     }
+                    reserve.free(bi);
                 }
             }
             return ret;
@@ -187,6 +204,7 @@ public class DbThink extends Thread {
                 } else {
                     ++collisions;
                 }
+                reserve.free(bi);
             }
         }
         return ret;
