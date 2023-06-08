@@ -2,6 +2,7 @@ import de.esnecca.multi.History;
 import de.esnecca.multi.db.Db;
 import de.esnecca.multi.db.DbConnection;
 import de.esnecca.multi.hash.HashTable;
+import de.esnecca.multi.reserve.Reserve;
 import de.esnecca.multi.DbThink;
 
 public class Database {
@@ -11,6 +12,7 @@ public class Database {
         History history = new History(7, 6, 2, 4);
         DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 10, 20, 12);
         HashTable hashTable = new HashTable(1000 * 1000 * 100);
+        Reserve reserve = new Reserve();
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
         DbConnection dbConnection = new DbConnection(db);
         if (dbConnection.getGameId(history) <= 0) {
@@ -27,7 +29,7 @@ public class Database {
                 history.insert(x);
                 for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                     if (!history.isFull(x2)) {
-                        DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits);
+                        DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits, reserve);
                         threads[x * history.getWidth() + x2] = dbThink;
                         dbThink.start();
                     }
@@ -61,7 +63,7 @@ public class Database {
         ocollisions = 0;
         for (int x = 0; x < history.getWidth(); ++x) {
             if (!history.isFull(x)) {
-                DbThink dbThink = new DbThink(history, x, hashTable, new DbConnection(db), dbThinkLimits);
+                DbThink dbThink = new DbThink(history, x, hashTable, new DbConnection(db), dbThinkLimits, reserve);
                 threads[x] = dbThink;
                 dbThink.start();
             }

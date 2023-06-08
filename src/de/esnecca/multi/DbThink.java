@@ -7,6 +7,7 @@ import de.esnecca.multi.db.DbConnection;
 import de.esnecca.multi.db.DbEntry;
 import de.esnecca.multi.hash.HashEntry;
 import de.esnecca.multi.hash.HashTable;
+import de.esnecca.multi.reserve.Reserve;
 
 public class DbThink extends Thread {
 
@@ -15,24 +16,23 @@ public class DbThink extends Thread {
     private HashTable hashTable;
     private DbConnection dbConnection;
     private DbThinkLimits limits;
+    private Reserve reserve;
 
     private int gameid;
     private long written;
     private long collisions;
 
-    public DbThink(History history, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits)
+    public DbThink(History history, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits, Reserve reserve)
             throws SQLException {
         this.history = new History(history);
         this.x = x;
         this.hashTable = hashTable;
         this.dbConnection = dbConnection;
         this.limits = limits;
+        this.reserve = reserve;
 
         gameid = dbConnection.getGameId(history);
 
-        // hashLimit = game.getSize() - 9;
-        // dbLimit = 24; // game.getSize() / 2;
-        // printLimit = 16; // game.getSize() / 2;
         written = 0;
         collisions = 0;
     }
@@ -91,9 +91,7 @@ public class DbThink extends Thread {
                 history.remove(x);
                 return hashEntry.getResult();
             }
-            if (biInserted <= limits.getDbLimit()) { // 23 nun 24 / Limit: 24
-                // System.out.format("READ biInserted: %d, dbLimit: %d%n", biInserted,
-                // limits.getDbLimit());
+            if (biInserted <= limits.getDbLimit()) { 
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
                 if (dbEntry != null) {
                     history.remove(x);
@@ -132,9 +130,7 @@ public class DbThink extends Thread {
             if (bi != null) {
                 HashEntry hashEntry = new HashEntry(bi, ret);
                 hashTable.set(hashEntry);
-                if (biInserted <= limits.getDbLimit()) { // vorher 23 < 24 nun 24 <= 24 Limit: 24
-                    // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted,
-                    // limits.getDbLimit());
+                if (biInserted <= limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
@@ -158,8 +154,6 @@ public class DbThink extends Thread {
                 hashTable.set(hashEntry);
                 if (biInserted <= limits.getDbLimit()) {
                     DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
-                    // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted,
-                    // limits.getDbLimit());
                     if (dbConnection.createEntry(dbEntry)) {
                         ++written;
                         if (history.getInserted() < limits.getPrintLimit()) {
@@ -182,8 +176,6 @@ public class DbThink extends Thread {
             hashTable.set(hashEntry);
             if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = new DbEntry(bi, gameid, ret, biInserted);
-                // System.out.format("WRITE biInserted: %d, dbLimit: %d%n", biInserted,
-                // limits.getDbLimit());
                 if (dbConnection.createEntry(dbEntry)) {
                     ++written;
                     if (history.getInserted() < limits.getPrintLimit()) {
