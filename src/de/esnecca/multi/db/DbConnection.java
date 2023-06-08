@@ -40,7 +40,7 @@ public class DbConnection {
         sql = "delete from reservations where bi = ? and gameid = ?;";
         preparedStatementDeleteReservation = conn.prepareStatement(sql);
         sql = "insert into reservations (bi, gameid, inserted) values(?,?,?);";
-        preparedStatementCreateGame = conn.prepareStatement(sql);
+        preparedStatementCreateReservation = conn.prepareStatement(sql);
     }
 
     public void close() throws SQLException {
