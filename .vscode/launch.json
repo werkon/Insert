@@ -24,11 +24,6 @@
         },
         {
             "type": "java",
-            "name": "DatabaseReserve",
-            "request": "launch",
-            "mainClass": "DatabaseReserve"
-        },        {
-            "type": "java",
             "name": "DatabaseLook",
             "request": "launch",
             "mainClass": "DatabaseLook",

@@ -22,7 +22,8 @@ public class DbThink extends Thread {
     private long written;
     private long collisions;
 
-    public DbThink(History history, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits, Reserve reserve)
+    public DbThink(History history, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits,
+            Reserve reserve)
             throws SQLException {
         this.history = new History(history);
         this.x = x;
@@ -91,24 +92,25 @@ public class DbThink extends Thread {
                 history.remove(x);
                 return hashEntry.getResult();
             }
-            if (biInserted <= limits.getDbLimit()) { 
+            if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
 
                 if (dbEntry == null) {
-                    if(!reserve.reserve(bi, biInserted)){
-                        while(true){
+                    if (biInserted > 10 && !reserve.reserve(bi, biInserted)) {
+                        while (true) {
                             try {
                                 Thread.sleep(100);
+//                                System.out.println("wait " + biInserted);
                             } catch (InterruptedException e) {
                             }
                             dbEntry = dbConnection.getDbEntry(bi, gameid);
-                            if( dbEntry != null ){
+                            if (dbEntry != null) { 
                                 history.remove(x);
                                 return dbEntry.getResult();
                             }
                         }
                     }
-                }else{
+                } else {
                     history.remove(x);
                     return dbEntry.getResult();
                 }
