@@ -94,28 +94,28 @@ public class DbThink extends Thread {
             }
             if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
-
                 if (dbEntry == null) {
-                    if (biInserted > 10 && !reserve.reserve(bi, biInserted)) {
-                        while (true) {
-                            try {
-                                Thread.sleep(100);
-//                                System.out.println("wait " + biInserted);
-                            } catch (InterruptedException e) {
-                            }
-                            dbEntry = dbConnection.getDbEntry(bi, gameid);
-                            if (dbEntry != null) { 
-                                history.remove(x);
-                                return dbEntry.getResult();
-                            }
-                        }
-                    }
                 } else {
                     history.remove(x);
                     return dbEntry.getResult();
                 }
             }
+            if ( biInserted >= 4 && !reserve.reserve(bi, biInserted)) {
+                while (true) {
+                    try {
+                        System.out.println("wait " + biInserted);
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    }
+                    DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
+                    if (dbEntry != null) { 
+                        history.remove(x);
+                        return dbEntry.getResult();
+                    }
+                }
+            }
         }
+
 
         int kleinstesPositivesR = 0;
         int groesstesNegativesR = 0;
@@ -160,8 +160,8 @@ public class DbThink extends Thread {
                     } else {
                         ++collisions;
                     }
-                    reserve.free(bi);
                 }
+                reserve.free(bi);
             }
             return ret;
         }
@@ -183,8 +183,8 @@ public class DbThink extends Thread {
                     } else {
                         ++collisions;
                     }
-                    reserve.free(bi);
                 }
+                reserve.free(bi);
             }
             return ret;
         }
@@ -206,8 +206,8 @@ public class DbThink extends Thread {
                 } else {
                     ++collisions;
                 }
-                reserve.free(bi);
             }
+            reserve.free(bi);
         }
         return ret;
     }
