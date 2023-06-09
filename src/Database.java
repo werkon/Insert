@@ -29,7 +29,8 @@ public class Database {
                 history.insert(x);
                 for (int x2 = 0; x2 < history.getWidth(); ++x2) {
                     if (!history.isFull(x2)) {
-                        DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits, reserve);
+                        DbThink dbThink = new DbThink(history, x2, hashTable, new DbConnection(db), dbThinkLimits,
+                                reserve);
                         threads[x * history.getWidth() + x2] = dbThink;
                         dbThink.start();
                     }
@@ -53,7 +54,7 @@ public class Database {
                 }
             }
             System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
-                    + " Cache: " + hashTable.filled() + "%");
+                    + " Cache: " + hashTable.filled() + "% Sleeping: " + reserve.getSleeping());
             owritten = written;
             ocollisions = collisions;
             Thread.sleep(1000 * 60);
