@@ -96,11 +96,11 @@ public class DbThink extends Thread {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
 
                 if (dbEntry == null) {
-                    if (biInserted > 10 && !reserve.reserve(bi, biInserted)) {
+                    if (biInserted >= 4 && !reserve.reserve(bi, biInserted)) {
                         while (true) {
                             try {
-                                Thread.sleep(100);
-//                                System.out.println("wait " + biInserted);
+                                Thread.sleep(1000);
+                                // System.out.println("wait " + biInserted);
                             } catch (InterruptedException e) {
                             }
                             dbEntry = dbConnection.getDbEntry(bi, gameid);
