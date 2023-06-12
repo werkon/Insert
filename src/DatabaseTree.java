@@ -18,6 +18,9 @@ public class DatabaseTree {
 
         System.out.print("\033[H\033[2J");
 
+        history.insert(3);
+        history.insert(3);
+
         while (true) {
 
             Integer[] results = new Integer[history.getWidth()];
@@ -50,7 +53,7 @@ public class DatabaseTree {
                 }
                 results[x] = result;
             }
-            if (true || history.getInserted() == 19) {
+            if ( true || history.getInserted() == 19) {
                 System.out.print("\033[H");
                 history.print(results);
                 System.out.flush();
