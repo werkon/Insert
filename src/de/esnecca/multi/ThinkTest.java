@@ -81,12 +81,12 @@ public class ThinkTest {
     @Test
     public void testThink2() {
         Random rn = new Random();
-        for (int i = 0; i < 100; ++i) {
+        for (int i = 0; i < 1000; ++i) {
             history.reset();
             System.out.println(i);
 
             for (int j = 0; j < 26; ++j) {
-                while (true) {
+                for(int k = 0; k < 100; ++k) {
                     int x = rn.nextInt(width);
                     if (!history.isFull(x)) {
                         if (!history.test(x)) {

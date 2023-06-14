@@ -1,7 +1,5 @@
 package de.esnecca.multi;
 
-import java.time.temporal.IsoFields;
-
 public class Think {
 
     private History history;

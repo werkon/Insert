@@ -10,7 +10,7 @@ public class Database {
     public static void main(String[] args) throws Exception {
 
         History history = new History(7, 6, 2, 4);
-        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 10, 20, 10);
+        DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 9, 20, 10);
         HashTable hashTable = new HashTable(1000 * 1000 * 250);
         Reserve reserve = new Reserve();
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
