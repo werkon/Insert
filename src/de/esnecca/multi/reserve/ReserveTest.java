@@ -47,4 +47,28 @@ public class ReserveTest {
         assertNull(reserve.free(bi));
 
     }
+
+    @Test
+    public void testDecSleeping() {
+        assertEquals(0,reserve.getSleeping());
+        reserve.incSleeping(10);
+        assertEquals(1,reserve.getSleeping());
+        reserve.incSleeping(10);
+        assertEquals(2,reserve.getSleeping());
+        reserve.incSleeping(11);
+        assertEquals(3,reserve.getSleeping());
+        System.out.println(reserve.toString());
+
+        reserve.decSleeping(10);
+        assertEquals(2,reserve.getSleeping());
+        System.out.println(reserve.toString());
+        reserve.decSleeping(11);
+        assertEquals(1,reserve.getSleeping());
+        System.out.println(reserve.toString());
+        reserve.decSleeping(10);
+        assertEquals(0,reserve.getSleeping());
+        System.out.println(reserve.toString());
+
+    }
+
 }

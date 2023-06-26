@@ -21,6 +21,8 @@ public class DbThink extends Thread {
     private int gameid;
     private long written;
     private long collisions;
+    private long hits;
+    private long nohits;
 
     public DbThink(History history, int x, HashTable hashTable, DbConnection dbConnection, DbThinkLimits limits,
             Reserve reserve)
@@ -36,6 +38,8 @@ public class DbThink extends Thread {
 
         written = 0;
         collisions = 0;
+        hits = 0;
+        nohits = 0;
     }
 
     public static class DbThinkLimits {
@@ -113,16 +117,18 @@ public class DbThink extends Thread {
             bi = history.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {
+                ++hits;
                 history.remove(x);
                 return hashEntry.getResult();
             }
+            ++nohits;
             if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
 
                 if (dbEntry == null) {
                     if (biInserted >= 4 && !reserve.reserve(bi, biInserted)) {
-                        reserve.incSleeping();
-                        // System.out.println("Sleep: " + biInserted);
+                        reserve.incSleeping(biInserted);
+                        System.out.println("Sleep: " + biInserted);
                         while (true) {
                             try {
                                 Thread.sleep(1000);
@@ -131,8 +137,8 @@ public class DbThink extends Thread {
                             }
                             dbEntry = dbConnection.getDbEntry(bi, gameid);
                             if (dbEntry != null) {
-                                // System.out.println("Wakeup: " + biInserted);
-                                reserve.decSleeping();
+                                System.out.println("Wakeup: " + biInserted);
+                                reserve.decSleeping(biInserted);
                                 history.remove(x);
                                 return dbEntry.getResult();
                             }
@@ -246,6 +252,14 @@ public class DbThink extends Thread {
 
     public long getCollisions() {
         return collisions;
+    }
+
+    public long getHits() {
+        return hits;
+    }
+
+    public long getNohits() {
+        return nohits;
     }
 
     @Override

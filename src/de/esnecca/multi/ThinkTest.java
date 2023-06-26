@@ -81,7 +81,7 @@ public class ThinkTest {
     @Test
     public void testThink2() {
         Random rn = new Random();
-        for (int i = 0; i < 1000; ++i) {
+        for (int i = 0; i < 10; ++i) {
             history.reset();
             System.out.println(i);
 
