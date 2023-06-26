@@ -128,7 +128,7 @@ public class DbThink extends Thread {
                 if (dbEntry == null) {
                     if (biInserted >= 4 && !reserve.reserve(bi, biInserted)) {
                         reserve.incSleeping(biInserted);
-                        System.out.println("Sleep: " + biInserted);
+                        // System.out.println("Sleep: " + biInserted);
                         while (true) {
                             try {
                                 Thread.sleep(1000);
@@ -137,7 +137,7 @@ public class DbThink extends Thread {
                             }
                             dbEntry = dbConnection.getDbEntry(bi, gameid);
                             if (dbEntry != null) {
-                                System.out.println("Wakeup: " + biInserted);
+                                // System.out.println("Wakeup: " + biInserted);
                                 reserve.decSleeping(biInserted);
                                 history.remove(x);
                                 return dbEntry.getResult();
