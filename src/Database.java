@@ -24,6 +24,7 @@ public class Database {
         long ocollisions = 0;
         long ohits = 0;
         long onohits = 0;
+        long otested = 0;
 
         DbThink[] threads = new DbThink[history.getWidth() * history.getWidth()];
         for (int x = 0; x < history.getWidth(); ++x) {
@@ -48,24 +49,30 @@ public class Database {
             long collisions = 0;
             long hits = 0;
             long nohits = 0;
+            long tested = 0;
             for (int x = 0; x < history.getWidth() * history.getWidth(); ++x) {
                 if (threads[x] != null) {
                     written += threads[x].getWritten();
                     collisions += threads[x].getCollisions();
                     hits += threads[x].getHits();
                     nohits += threads[x].getNohits();
+                    tested += threads[x].getTested();
                     if (threads[x].isAlive()) {
                         stop = false;
                     }
                 }
             }
-            System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
-                    + " Hits: " + (nohits - onohits) * 100 / ((hits - ohits) + (nohits - onohits))
-                    + "% Cache: " + hashTable.filled() + "% Sleeping: " + reserve.getSleeping() + " " + reserve.toString());
+            System.out.println(
+                    "Tested: " + (tested - otested)
+                            + " Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
+                            + " Hits: " + (nohits - onohits) * 100 / ((hits - ohits) + (nohits - onohits))
+                            + "% Cache: " + hashTable.filled() + "% Sleeping: " + reserve.getSleeping() + " "
+                            + reserve.toString());
             owritten = written;
             ocollisions = collisions;
             ohits = hits;
             onohits = nohits;
+            otested = tested;
             Thread.sleep(1000 * 60);
         }
 

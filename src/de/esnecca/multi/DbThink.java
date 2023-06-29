@@ -279,4 +279,9 @@ public class DbThink extends Thread {
         System.out.println("");
         System.out.flush();
     }
+
+    public long getTested() {
+        return history.getTested();
+    }
+
 }

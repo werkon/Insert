@@ -11,6 +11,7 @@ public class Game extends Field {
     private int[] insertedRow;
     private BigInteger mulitplicatorColors;
     private BigInteger mulitplicatorHeight;
+    private long tested;
 
     public Game(int width, int height, int colors, int wins) {
         super(width, height);
@@ -34,6 +35,7 @@ public class Game extends Field {
         }
         mulitplicatorColors = g.mulitplicatorColors;
         mulitplicatorHeight = g.mulitplicatorHeight;
+        tested = 0;
     }
 
     public void reset() {
@@ -43,6 +45,7 @@ public class Game extends Field {
         }
         inserted = 0;
         currentColor = 1;
+        tested = 0;
     }
 
     public void insert(int x) {
@@ -181,6 +184,8 @@ public class Game extends Field {
     }
 
     public boolean test(int x) {
+
+        ++tested;
 
         // Horizontal
         int count = 1;
@@ -406,4 +411,9 @@ public class Game extends Field {
         }
         currentColor = inserted % colors + 1;
     }
+
+    public long getTested() {
+        return tested;
+    }
+
 }
