@@ -63,7 +63,7 @@ public class Database {
                 }
             }
             System.out.println(
-                    "Tested: " + (tested - otested)
+                    "Tested: " + ((tested - otested) / 1000000000)
                             + " Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
                             + " Hits: " + (nohits - onohits) * 100 / ((hits - ohits) + (nohits - onohits))
                             + "% Cache: " + hashTable.filled() + "% Sleeping: " + reserve.getSleeping() + " "
