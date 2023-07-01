@@ -113,7 +113,11 @@ public class DbThink extends Thread {
         BigInteger bi = null;
         int biInserted = history.getInserted();
 
-        if (history.getInserted() <= limits.getHashLimit()) {
+        boolean a = history.getInserted() <= limits.getHashLimit();
+        boolean b = history.getFreeSlots() >= 3;
+
+        if (a || b) {
+
             bi = history.getSmallestBigInteger();
             HashEntry hashEntry = hashTable.get(bi);
             if (hashEntry != null && hashEntry.getValue().equals(bi)) {

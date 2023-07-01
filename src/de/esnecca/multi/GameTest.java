@@ -723,7 +723,7 @@ public class GameTest {
                     BigInteger bi = game.getBigInteger();
                     Game g = new Game(width, height, colors, wins);
                     g.fromBigInteger(bi);
-    
+
                     assertTrue(g.equals(game));
                     assertTrue(game.equals(g));
                 }
@@ -781,7 +781,7 @@ public class GameTest {
 
                     g3 = new Game(width, height, colors, wins);
                     g3.fromBigInteger(bi2);
-            
+
                     assertTrue(game.equals(g3));
                 }
             }
@@ -796,16 +796,28 @@ public class GameTest {
         BigInteger bi1 = game.getSmallestBigInteger();
 
         Game g = new Game(width, height, colors, wins);
-        g.insert(width -1);
-        g.insert(width -1);
-        g.insert(width -1);
+        g.insert(width - 1);
+        g.insert(width - 1);
+        g.insert(width - 1);
         BigInteger bi2 = g.getSmallestBigInteger();
 
         assertTrue(bi1.equals(bi2));
 
         Game g2 = new Game(width, height, colors, wins);
         g2.fromBigInteger(bi1);
-        //g2.print();
+        // g2.print();
 
+    }
+
+    @Test
+    public void testGetFreeSlots() {
+        assertEquals(game.getWidth(), game.getFreeSlots());
+        for (int i = 0; i < game.getHeight(); ++i) {
+            assertEquals(game.getWidth(), game.getFreeSlots());
+            game.insert(0);
+        }
+        assertEquals(game.getWidth() - 1, game.getFreeSlots());
+        game.remove(0);
+        assertEquals(game.getWidth(), game.getFreeSlots());
     }
 }

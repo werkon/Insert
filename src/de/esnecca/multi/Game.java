@@ -12,6 +12,7 @@ public class Game extends Field {
     private BigInteger mulitplicatorColors;
     private BigInteger mulitplicatorHeight;
     private long tested;
+    private int freeSlots;
 
     public Game(int width, int height, int colors, int wins) {
         super(width, height);
@@ -36,6 +37,7 @@ public class Game extends Field {
         mulitplicatorColors = g.mulitplicatorColors;
         mulitplicatorHeight = g.mulitplicatorHeight;
         tested = 0;
+        freeSlots = g.freeSlots;
     }
 
     public void reset() {
@@ -46,6 +48,7 @@ public class Game extends Field {
         inserted = 0;
         currentColor = 1;
         tested = 0;
+        freeSlots = getWidth();
     }
 
     public void insert(int x) {
@@ -55,9 +58,15 @@ public class Game extends Field {
             currentColor = 1;
         }
         ++inserted;
+        if(isFull(x)){
+            --freeSlots;
+        }
     }
 
     public void remove(int x) {
+        if(isFull(x)){
+            ++freeSlots;
+        }
         set(x, --insertedRow[x], 0);
         --currentColor;
         if (currentColor <= 0) {
@@ -414,6 +423,10 @@ public class Game extends Field {
 
     public long getTested() {
         return tested;
+    }
+
+    public int getFreeSlots() {
+        return freeSlots;
     }
 
 }
