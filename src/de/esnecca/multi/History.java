@@ -52,7 +52,7 @@ public class History extends Game {
         }
     }
 
-    public void print(){
+    public void print() {
         super.print();
         System.out.print("    ");
         for (int x = 0; x < getWidth(); ++x) {
@@ -93,6 +93,17 @@ public class History extends Game {
 
     public void remove() {
         remove(history[getInserted() - 1]);
+    }
+
+    public void printHistory() {
+
+        for (int i = 0; i < getInserted(); ++i) {
+            if (i > 0) {
+                System.out.print(", ");
+            }
+            System.out.print(history[i]);
+        }
+        System.out.println("");
     }
 
 }

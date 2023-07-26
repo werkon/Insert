@@ -9,7 +9,7 @@ public class Count {
 
     public static void main(String[] args) throws Exception {
 
-        for(int d = 1; d <= 20; ++d){
+        for (int d = 14; d <= 14; ++d) {
             History history = new History(7, 6, 2, 4);
             Set<BigInteger> set = new HashSet<BigInteger>(1000000);
             calcSet(d, history, set);
@@ -20,16 +20,16 @@ public class Count {
 
     private static void calcSet(int depth, History history, Set<BigInteger> set) {
 
-        if( history.getInserted() >= depth){
-            for(int x = 0; x < history.getWidth(); ++x){
-                if(!history.isFull(x)){
-                    if(history.test(x)){
+        if (history.getInserted() >= depth) {
+            for (int x = 0; x < history.getWidth(); ++x) {
+                if (!history.isFull(x)) {
+                    if (history.test(x)) {
                         return;
                     }
                     history.insert(x);
-                    for(int x2 = 0; x2 < history.getWidth(); ++x2){
-                        if(!history.isFull(x2)){
-                            if(history.test(x2)){
+                    for (int x2 = 0; x2 < history.getWidth(); ++x2) {
+                        if (!history.isFull(x2)) {
+                            if (history.test(x2)) {
                                 history.remove();
                                 return;
                             }
@@ -42,10 +42,14 @@ public class Count {
             return;
         }
 
-        for(int x = 0; x < history.getWidth(); ++x){
-            if( !history.isFull(x)){
-                if(!history.test(x)){
+        for (int x = 0; x < history.getWidth(); ++x) {
+
+            if (!history.isFull(x)) {
+                if (!history.test(x)) {
                     history.insert(x);
+                    if (history.getInserted() == 3) {
+                        history.printHistory();
+                    }
                     calcSet(depth, history, set);
                     history.remove();
                 }
