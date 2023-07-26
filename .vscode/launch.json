@@ -33,6 +33,13 @@
             "name": "DatabaseTree",
             "request": "launch",
             "mainClass": "DatabaseTree",
+        },
+        {
+            "type": "java",
+            "name": "Count",
+            "request": "launch",
+            "mainClass": "Count",
         }
+
     ]
 }
