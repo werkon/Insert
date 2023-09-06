@@ -126,7 +126,7 @@ public class DbThink extends Thread {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
 
                 if (dbEntry == null) {
-                    if (biInserted >= 4 && !reserve.reserve(bi, biInserted)) {
+                    if (biInserted >= 10 && !reserve.reserve(bi, biInserted)) {
                         reserve.incSleeping(biInserted);
                         // System.out.println("Sleep: " + biInserted);
                         while (true) {
