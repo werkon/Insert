@@ -42,9 +42,15 @@ public class Database {
             }
         }
 
+        System.out.println("Started...");
+
+        long rounds = 1;
         boolean stop = false;
         while (!stop) {
             stop = true;
+
+            Thread.sleep(1000 * 60);
+
             long written = 0;
             long collisions = 0;
             long hits = 0;
@@ -64,7 +70,8 @@ public class Database {
             }
             System.out.println(
                     "Tested: " + ((tested - otested) / 1000000000)
-                            + " Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
+                            + " Written: " + (written - owritten) + "/" + (written / rounds) + " Collisions: "
+                            + (collisions - ocollisions)
                             + " Hits: " + (nohits - onohits) * 100 / ((hits - ohits) + (nohits - onohits))
                             + "% Cache: " + hashTable.filled() + "% Sleeping: " + reserve.getSleeping() + " "
                             + reserve.toString());
@@ -73,7 +80,7 @@ public class Database {
             ohits = hits;
             onohits = nohits;
             otested = tested;
-            Thread.sleep(1000 * 60);
+            ++rounds;
         }
 
         owritten = 0;
@@ -89,6 +96,9 @@ public class Database {
         stop = false;
         while (!stop) {
             stop = true;
+
+            Thread.sleep(1000 * 60);
+
             long written = 0;
             long collisions = 0;
             for (int x = 0; x < history.getWidth(); ++x) {
@@ -112,7 +122,6 @@ public class Database {
 
             owritten = written;
             ocollisions = collisions;
-            Thread.sleep(1000 * 60);
         }
     }
 }
