@@ -83,8 +83,6 @@ public class Database {
             ++rounds;
         }
 
-        owritten = 0;
-        ocollisions = 0;
         for (int x = 0; x < history.getWidth(); ++x) {
             if (!history.isFull(x)) {
                 DbThink dbThink = new DbThink(history, x, hashTable, new DbConnection(db), dbThinkLimits, reserve);
@@ -93,35 +91,24 @@ public class Database {
             }
         }
 
+        System.out.println("Started (2)...");
+
         stop = false;
         while (!stop) {
             stop = true;
 
             Thread.sleep(1000 * 60);
 
-            long written = 0;
-            long collisions = 0;
             for (int x = 0; x < history.getWidth(); ++x) {
                 if (threads[x] != null) {
-                    written += threads[x].getWritten();
-                    collisions += threads[x].getCollisions();
                     if (threads[x].isAlive()) {
                         stop = false;
                     }
                 }
             }
-            System.out.println("Written: " + (written - owritten) + " Collisions: " + (collisions - ocollisions)
-                    + " Cache: " + hashTable.filled() + "%");
-
-            Runtime rt = Runtime.getRuntime();
-
-            long total_mem = rt.totalMemory();
-            long free_mem = rt.freeMemory();
-            long used_mem = total_mem - free_mem;
-            System.out.println("T: " + total_mem + " F: " + free_mem + " U: " + used_mem);
-
-            owritten = written;
-            ocollisions = collisions;
         }
+
+        System.out.println("End...");
+
     }
 }
