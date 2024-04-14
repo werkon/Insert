@@ -9,6 +9,8 @@ public class Database {
 
     public static void main(String[] args) throws Exception {
 
+        System.out.println("Starting DB...");
+
         History history = new History(7, 6, 2, 4);
         DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 10, 20, 10);
         HashTable hashTable = new HashTable(1000 * 1000 * 250);
@@ -25,6 +27,8 @@ public class Database {
         long ohits = 0;
         long onohits = 0;
         long otested = 0;
+
+        System.out.println("Starting Threads...");
 
         DbThink[] threads = new DbThink[history.getWidth() * history.getWidth()];
         for (int x = 0; x < history.getWidth(); ++x) {
