@@ -13,7 +13,7 @@ public class Database {
 
         History history = new History(7, 6, 2, 4);
         DbThink.DbThinkLimits dbThinkLimits = new DbThink.DbThinkLimits(history.getSize() - 10, 20, 10);
-        HashTable hashTable = new HashTable(1000 * 1000 * 250);
+        HashTable hashTable = new HashTable(1000 * 1000 * 100);
         Reserve reserve = new Reserve();
         Db db = new Db("insert", "insert", "jdbc:postgresql://localhost:5432/insert");
         DbConnection dbConnection = new DbConnection(db);
@@ -28,7 +28,7 @@ public class Database {
         long onohits = 0;
         long otested = 0;
 
-        System.out.println("Starting Threads...");
+        System.out.println("Starting threads...");
 
         DbThink[] threads = new DbThink[history.getWidth() * history.getWidth()];
         for (int x = 0; x < history.getWidth(); ++x) {
@@ -46,7 +46,7 @@ public class Database {
             }
         }
 
-        System.out.println("Started...");
+        System.out.println("Started " + threads.length + " threads..." );
 
         long rounds = 1;
         boolean stop = false;

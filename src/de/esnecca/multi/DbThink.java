@@ -85,8 +85,11 @@ public class DbThink extends Thread {
         }
 
         history.remove(x);
+        int ret = _think(x);
 
-        return _think(x);
+        printHistoryFinished(history, x);
+
+        return ret;
     }
 
     private int _think(int x) throws SQLException {
@@ -188,7 +191,6 @@ public class DbThink extends Thread {
                         if (history.getInserted() < limits.getPrintLimit()) {
                             history.insert(x);
                             print(history, ret);
-                            System.out.println("");
                             history.remove(x);
                         }
                     } else {
@@ -211,7 +213,6 @@ public class DbThink extends Thread {
                         if (history.getInserted() < limits.getPrintLimit()) {
                             history.insert(x);
                             print(history, ret);
-                            System.out.println("");
                             history.remove(x);
                         }
                     } else {
@@ -234,7 +235,6 @@ public class DbThink extends Thread {
                     if (history.getInserted() < limits.getPrintLimit()) {
                         history.insert(x);
                         print(history, ret);
-                        System.out.println("");
                         history.remove(x);
                     }
                 } else {
@@ -277,6 +277,14 @@ public class DbThink extends Thread {
         System.out.format("      result: %d", ret);
         System.out.println("");
         System.out.println("");
+        System.out.flush();
+    }
+
+    static synchronized public void printHistoryFinished(History history, int x) {
+        history.insert(x);
+        System.out.print("Finished: ");
+        history.printHistory();
+        history.remove(x);
         System.out.flush();
     }
 
