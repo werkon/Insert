@@ -134,7 +134,7 @@ public class DbThink extends Thread {
                         // System.out.println("Sleep: " + biInserted);
                         while (true) {
                             try {
-                                Thread.sleep(1000);
+                                Thread.sleep(5000);
                                 // System.out.println("wait " + biInserted);
                             } catch (InterruptedException e) {
                             }

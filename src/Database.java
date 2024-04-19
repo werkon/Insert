@@ -60,6 +60,7 @@ public class Database {
             long hits = 0;
             long nohits = 0;
             long tested = 0;
+            int running = 0;
             for (int x = 0; x < history.getWidth() * history.getWidth(); ++x) {
                 if (threads[x] != null) {
                     written += threads[x].getWritten();
@@ -69,11 +70,13 @@ public class Database {
                     tested += threads[x].getTested();
                     if (threads[x].isAlive()) {
                         stop = false;
+                        ++running;
                     }
                 }
             }
             System.out.println(
-                    "Tested: " + ((tested - otested) / 1000000000)
+                    "Running: " + running + " (" + (running - reserve.getSleeping()) + ")"
+                            + " Tested: " + ((tested - otested) / 1000000000)
                             + " Written: " + (written - owritten) + "/" + (written / rounds) + " Collisions: "
                             + (collisions - ocollisions)
                             + " Hits: " + (nohits - onohits) * 100 / ((hits - ohits) + (nohits - onohits))
