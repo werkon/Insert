@@ -124,11 +124,11 @@ public class DbThink extends Thread {
                 history.remove(x);
                 return hashEntry.getResult();
             }
-            ++nohits;
             if (biInserted <= limits.getDbLimit()) {
                 DbEntry dbEntry = dbConnection.getDbEntry(bi, gameid);
 
                 if (dbEntry == null) {
+                    ++nohits;
                     if (biInserted >= 10 && !reserve.reserve(bi, biInserted)) {
                         reserve.incSleeping(biInserted);
                         // System.out.println("Sleep: " + biInserted);
@@ -148,9 +148,12 @@ public class DbThink extends Thread {
                         }
                     }
                 } else {
+                    ++hits;
                     history.remove(x);
                     return dbEntry.getResult();
                 }
+            } else {
+                ++nohits;
             }
         }
 
