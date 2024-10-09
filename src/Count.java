@@ -9,7 +9,7 @@ public class Count {
 
     public static void main(String[] args) throws Exception {
 
-        for (int d = 14; d <= 14; ++d) {
+        for (int d = 1; d <= 14; ++d) {
             History history = new History(7, 6, 2, 4);
             Set<BigInteger> set = new HashSet<BigInteger>(1000000);
             calcSet(d, history, set);
@@ -26,16 +26,16 @@ public class Count {
                     if (history.test(x)) {
                         return;
                     }
-                    history.insert(x);
-                    for (int x2 = 0; x2 < history.getWidth(); ++x2) {
-                        if (!history.isFull(x2)) {
-                            if (history.test(x2)) {
-                                history.remove();
-                                return;
-                            }
-                        }
-                    }
-                    history.remove();
+                    // history.insert(x);
+                    // for (int x2 = 0; x2 < history.getWidth(); ++x2) {
+                    //     if (!history.isFull(x2)) {
+                    //         if (history.test(x2)) {
+                    //             history.remove();
+                    //             return;
+                    //         }
+                    //     }
+                    // }
+                    // history.remove();
                 }
             }
             set.add(history.getSmallestBigInteger());
@@ -47,9 +47,9 @@ public class Count {
             if (!history.isFull(x)) {
                 if (!history.test(x)) {
                     history.insert(x);
-                    if (history.getInserted() == 3) {
-                        history.printHistory();
-                    }
+                    // if (history.getInserted() == 3) {
+                    //     history.printHistory();
+                    // }
                     calcSet(depth, history, set);
                     history.remove();
                 }
