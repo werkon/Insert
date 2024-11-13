@@ -18,7 +18,7 @@ public class DatabaseTree {
 
         System.out.print("\033[H\033[2J");
 
-        // history.insert(3);
+        history.insert(1);
         // history.insert(3);
 
         while (true) {

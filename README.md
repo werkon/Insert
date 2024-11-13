@@ -1,9 +1,5 @@
 
-
-delete FROM public.entries where gameid=1
-
-SELECT *  FROM public.entries where gameid=1
-ORDER BY inserted asc
+start /LOW java.exe -Xmx48g -jar D:\Java\Insert\Insert.jar
 
 SELECT inserted, count(*) FROM public.entries where gameid=1
 group by 1 ORDER BY inserted asc
